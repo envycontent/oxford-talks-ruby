@@ -1,0 +1,25 @@
+	
+/*@import url("talks-screen-ox-rewrite.css");*/
+/* Basic color restyling to make the site look like www.ox.ac.uk */
+
+/** Navigation bar **/
+#navigation {
+	height: 18px; 
+	position: relative; 
+	background: url("/images/navbg-ox.gif") repeat-x top left #09c; 
+	margin: 0; 
+	}
+
+	/*Blue/grey lines, bottom carries space above*/
+	.line {
+		font-size:1px; 
+		line-height:1px; 
+		height: 4px; 
+		background: #002147; 
+		border-bottom: solid 2px #ccc; 
+		width:100%; 
+		padding:0; 
+		margin: 0;
+		}
+
+

@@ -1,0 +1,27 @@
+<h1>Other lists</h1>
+
+<% affiliation_lists = List.suggested_by_affiliation(User.current) %>
+<% unless affiliation_lists == nil %>
+	<% for affiliation_list in affiliation_lists %>
+		<% next if affiliation_list.ex_directory? %>
+		<%= link_list affiliation_list %>
+	<% end %>
+<% end %>
+
+<% unless @talk.related_lists.empty? %>
+
+	<% for related_list in @talk.related_lists %>
+	<% next if related_list.list.ex_directory? %>
+		<%= link_list related_list.list %>
+	<% end %>
+
+<% else %>
+	<p>This will be updated at midnight.</p>
+<% end %>
+
+<h2>Other talks</h2>
+
+<% for related_talk in @talk.related_talks %>
+	<% next if related_talk.talk.ex_directory? %>
+	<%= link_talk related_talk.talk %>
+<% end %>

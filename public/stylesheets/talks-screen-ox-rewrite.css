@@ -1,0 +1,100 @@
+
+/* Lovely Oxford Blue */
+html { background-color:#002147; } 
+body { background-color:#002147; }
+
+body {
+	min-width: 772px;
+/* Not sure why this is necessary... */
+	width:98%;
+/* Georgia, "Times New Roman", Verdana, Helvetica, Arial, sans-serif; */
+	font-family: arial, sans-serif;
+	line-height:1.2em;
+	padding-bottom:20px;
+	font-size:100%;
+  color: white;
+}
+
+/** Un - Nudge the arrows **/
+td.left img {
+	top: 0em;
+}
+	
+h1 {
+	font-weight:bold;
+	margin: 10px 0;
+}
+
+h2 {
+	font-weight:bold;
+}
+
+h3 {
+	font-weight:bold;
+}
+
+h4 {
+	font-weight:normal;
+}
+
+
+/* Change all text to white */
+p, a, a:link, a:visited, a:link:hover, a:visited:hover, a[href]:active, h1, h2, h3, h4, h1 a, h1 a:visited, h2 a, h2 a:visited, h1.index, h1.index a, h1.index a:visited, h1.index a:link:hover, h1.index a:visited:hover, div.fullwidthlinks a:hover, .front td.main p.list a:hover, td.related a:hover, .list td.main div.simpletalk h2 a, .list td.main div.simpletalk h2 a:visited, div.simplewithlogo a, div.simplewithlogo a:visited, div.simplewithlogo a:hover, .list td.main div.simpletalk p a:visited, .list td.main div.simpletalk p a
+{ color: white; background-color: transparent; }
+
+.list td.main div.simpletalk h2 {
+  font-weight: bold;
+}
+
+input:focus, textarea:focus{
+		background-color: #FFFFFF;
+}
+
+h1, h2, h3, h4 { text-transform: uppercase; border-bottom: none; }
+
+/* Remove the borders */
+.front td.left, .front td.cure {
+  border-right: 0px;
+}
+
+h1.index {
+  border-top:0px;
+}
+
+/* Change warning messages */
+p.createwarn {
+	background-color: transparent;
+	padding: 5px;
+  border-color:white;
+  border:solid;
+  border-width:1px;
+}
+
+/* Change help colours */
+td#edit_talk_help .help {
+	padding: 0.5em;
+	background-color: transparent;
+}
+	
+td#edit_talk_help div.help p {
+	padding: 0 0 0.5em 0;
+	margin: 0;
+	background-color: transparent;
+}
+
+td#edit_talk_help .help, td#edit_talk_help div.help {
+  border-color:white;
+  border:solid;
+  border-width:1px;
+}
+
+ul.indexselector li.selected {
+	background-color: transparent;
+}
+
+form.search p.examples {
+		color: white;
+}
+
+/*img.logo {border: solid ; border-color: white; border-width: 1px}*/
+

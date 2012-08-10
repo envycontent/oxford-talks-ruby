@@ -1,0 +1,6 @@
+<%= form_tag( {:action => 'results'}, {:class => 'search' }) %>
+	<p class='examples'><%= InstallationHelper::CURRENT_INSTALLATION.searchExample %></p>
+	<%= text_field_tag 'search', search, :size => '40' %><%= submit_tag 'Search' %>
+	<p class='settings'><%= link_to 'Browse the A-Z index', index_url %></p>
+	<script>Behaviour.register(search_rules);</script>
+</form>
