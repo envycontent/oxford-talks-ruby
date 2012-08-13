@@ -8,8 +8,8 @@
 development:
   adapter: mysql
   database: talks2_development
-  username: talks
-  password: hf4TkZ3~J
+  username: talks2
+  password: talkstalks
 
   # Connect on a TCP socket.  If omitted, the adapter will connect on the
   # domain socket given by socket instead.
@@ -22,11 +22,11 @@ development:
 test:
   adapter: mysql
   database: talks2_testing
-  username: talks
-  password: hf4TkZ3~J
+  username: talks2
+  password: talkstalks
 
 production:
   adapter: mysql
   database: talks2_production
-  username: talks
-  password: hf4TkZ3~J
+  username: talks2
+  password: talkstalks

@@ -44,60 +44,60 @@ class LoginTest < ActionController::IntegrationTest
 
     module LoginDSL
      
-     attr_accessor :user
+      attr_accessor :user
      
-     def goes_to_login
-       get login_url
-       assert_response :success
-       assert_template "login/index"
-     end
+      def goes_to_login
+        get login_url
+        assert_response :success
+        assert_template "login/index"
+      end
      
-     def goes_to_account_request
-       get new_user_url
-       assert_response :success
-       assert_template "user/new"
-     end
+      def goes_to_account_request
+        get new_user_url
+        assert_response :success
+        assert_template "user/new"
+      end
           
-     def signs_up_as(details)
-       get new_user_url
+      def signs_up_as(details)
+        get new_user_url
         post user_url(:action => 'create'), details
         user = assigns(:user)
         assert_response :redirect
         assert_redirected_to user_url(:action => "password_sent")
-     end
+      end
      
-     def email_for( address )
+      def email_for( address )
         ActionMailer::Base.deliveries.find_all { |mail| mail.to.include? address }
-     end
+      end
      
-     def delete_email_for( address )
+      def delete_email_for( address )
         ActionMailer::Base.deliveries.delete_if { |mail| mail.to.include? address }
-     end
+      end
      
-     def gets_an_email_with_login_details( address )
-       assert_equal 1, email_for(address).find_all{ |mail| mail.subject == 'Your talks.cam password' }.size
-     end
+      def gets_an_email_with_login_details( address )
+        assert_equal 1, email_for(address).find_all{ |mail| mail.subject == 'Your talks.cam password' }.size
+      end
      
-     def logs_in( email = nil, return_url = nil )
-        @user = User.find_by_email email
-        params = { :email => user.email, :password => user.password }
-        params[:return_url] = return_url if return_url
-        post login_url(:action=>'not_raven_login'), params
-     end
+      def logs_in( email = nil, return_url = nil )
+         @user = User.find_by_email email
+         params = { :email => user.email, :password => user.password }
+         params[:return_url] = return_url if return_url
+         post login_url(:action=>'not_raven_login'), params
+      end
      
-     def logs_out
-        get login_url(:action => 'logout')
-        assert_response :success
-        assert_template 'login/logout'
-     end
+      def logs_out
+         get login_url(:action => 'logout')
+         assert_response :success
+         assert_template 'login/logout'
+      end
      
-     def sent_to_new_user_page?
-       assert_response :redirect
-       assert_redirected_to user_url(:action => 'edit',:id => user.id)
-     end
+      def sent_to_new_user_page?
+        assert_response :redirect
+        assert_redirected_to user_url(:action => 'edit',:id => user.id)
+      end
 
-     def submits_new_user_page( parameters )
-       post login_url(:action => 'do_new_user'), parameters   
+      def submits_new_user_page( parameters )
+        post login_url(:action => 'do_new_user'), parameters   
       end
       
       def sent_to_personal_list?

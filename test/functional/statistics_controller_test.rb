@@ -4,7 +4,7 @@ require 'statistics_controller'
 # Re-raise errors caught by the controller.
 class StatisticsController; def rescue_action(e) raise e end; end
 
-class StatisticsControllerTest < Test::Unit::TestCase
+class StatisticsControllerTest < ActionController::TestCase
   fixtures :users, :talks, :lists
   
   def setup

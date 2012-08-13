@@ -24,9 +24,12 @@ module ActiveRecord
           when Float, Fixnum, Bignum    then value.to_s
           # BigDecimals need to be output in a non-normalized form and quoted.
           when BigDecimal               then value.to_s('F')
-          when Date                     then "'#{value.to_s}'"
-          when Time, DateTime           then "'#{quoted_date(value)}'"
-          else                          "'#{quote_string(value.to_yaml)}'"
+          else
+            if value.acts_like?(:date) || value.acts_like?(:time)
+              "'#{quoted_date(value)}'"
+            else
+              "'#{quote_string(value.to_yaml)}'"
+            end
         end
       end
 
@@ -36,22 +39,26 @@ module ActiveRecord
         s.gsub(/\\/, '\&\&').gsub(/'/, "''") # ' (for ruby-mode)
       end
 
-      # Returns a quoted form of the column name.  This is highly adapter
-      # specific.
-      def quote_column_name(name)
-        name
+      # Quotes the column name. Defaults to no quoting.
+      def quote_column_name(column_name)
+        column_name
+      end
+
+      # Quotes the table name. Defaults to column name quoting.
+      def quote_table_name(table_name)
+        quote_column_name(table_name)
       end
 
       def quoted_true
         "'t'"
       end
-      
+
       def quoted_false
         "'f'"
       end
-      
+
       def quoted_date(value)
-        value.strftime("%Y-%m-%d %H:%M:%S")
+        value.to_s(:db)
       end
     end
   end

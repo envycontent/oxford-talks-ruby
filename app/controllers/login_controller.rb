@@ -1,0 +1,2 @@
+class LoginController < InstallationHelper.CURRENT_INSTALLATION.loginController
+end

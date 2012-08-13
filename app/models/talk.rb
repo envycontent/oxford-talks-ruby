@@ -285,7 +285,9 @@ class Talk < ActiveRecord::Base
   
   # FIXME: Refactor with the code in the show controller
 	def month_range( year, start_month, end_month )
-	 return Time.local( year, start_month ).at_beginning_of_month, Time.local(year,end_month).at_end_of_month
+    # Remove the 999..99 usecs (changed in rails)
+    return Time.local( year, start_month ).at_beginning_of_month, 
+      Time.local(year,end_month).at_end_of_month.change(:usec => 0)
 	end
   
 end

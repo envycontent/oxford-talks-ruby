@@ -1,3 +1,32 @@
+*GIT* (version numbers are overrated)
+
+* (16 Jun 2008) Backwards Compatibility is overrated (big updates for rails 2.1)
+
+  * Use ActiveRecord 2.1's dirty attribute checking instead [Asa Calow]
+  * Remove last traces of #non_versioned_fields
+  * Remove AR::Base.find_version and AR::Base.find_versions, rely on AR association proxies and named_scope
+  * Remove #versions_count, rely on AR association counter caching.
+  * Remove #versioned_attributes, basically the same as AR::Base.versioned_columns
+
+* (5 Oct 2006) Allow customization of #versions association options [Dan Peterson]
+
+*0.5.1*
+
+* (8 Aug 2006) Versioned models now belong to the unversioned model.  @article_version.article.class => Article [Aslak Hellesoy]
+
+*0.5* # do versions even matter for plugins?
+
+* (21 Apr 2006) Added without_locking and without_revision methods.
+
+  Foo.without_revision do
+    @foo.update_attributes ...
+  end
+
+*0.4*
+
+* (28 March 2006) Rename non_versioned_fields to non_versioned_columns (old one is kept for compatibility).
+* (28 March 2006) Made explicit documentation note that string column names are required for non_versioned_columns.
+
 *0.3.1*
 
 * (7 Jan 2006) explicitly set :foreign_key option for the versioned model's belongs_to assocation for STI [Caged]

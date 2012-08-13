@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ImageTest < Test::Unit::TestCase
+class ImageTest < ActiveSupport::TestCase
   
   def test_data
     # Add a gif file

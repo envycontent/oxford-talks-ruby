@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class RelatedTalkTest < Test::Unit::TestCase
+class RelatedTalkTest < ActiveSupport::TestCase
   fixtures :lists, :talks
   
   def test_update_on_create

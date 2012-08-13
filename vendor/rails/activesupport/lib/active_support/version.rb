@@ -1,8 +1,8 @@
 module ActiveSupport
   module VERSION #:nodoc:
-    MAJOR = 1
-    MINOR = 4
-    TINY  = 2
+    MAJOR = 2
+    MINOR = 3
+    TINY  = 14
 
     STRING = [MAJOR, MINOR, TINY].join('.')
   end

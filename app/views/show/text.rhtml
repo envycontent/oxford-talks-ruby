@@ -16,5 +16,5 @@ Error: <%= error %>
 <%= talk_url(:id => talk ) %>
 <% end %>
 <% end %>
-<% inst = InstallationHelper::CURRENT_INSTALLATION %>
+<% inst = InstallationHelper.CURRENT_INSTALLATION %>
 Powered by <%= inst.talksSiteName %> (http://<%= inst.talksSiteHost %>)

@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ListTest < Test::Unit::TestCase
+class ListTest < ActiveSupport::TestCase
   fixtures :lists, :users, :list_users
   
   def test_public_finder

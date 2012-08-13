@@ -13,7 +13,7 @@ Click <%= link_to 'here', login_url(:action => :return_to_original_url )%> to re
 </p>
 <% end %>
 
-<% site_name = InstallationHelper::CURRENT_INSTALLATION.talksSiteName %>
+<% site_name = InstallationHelper.CURRENT_INSTALLATION.talksSiteName %>
 
 <table>
 <tr><td>Name:</td><td><%= @user.name %></td></tr>

@@ -1,3 +1,5 @@
+require "installation_helper"
+
 ActionController::Routing::Routes.draw do |map|
   map.resources :tickles
 
@@ -29,7 +31,7 @@ ActionController::Routing::Routes.draw do |map|
   map.new_user 'user/new', :controller => 'user', :action => 'new'
   map.user 'user/:action/:id', :controller => 'user', :action => 'show'
   map.talk 'talk/:action/:id', :controller => 'talk', :action => 'index'
-  map.login 'login/:action', :controller => InstallationHelper::CURRENT_INSTALLATION.loginController, :action => 'index'
+  map.login 'login/:action', :controller => 'login', :action => 'index'
   map.reminder 'reminder/:action/:id', :controller => 'reminder', :action => 'index'
   map.include_list '/include/list/:action/:id', :controller => 'list_list', :action => 'create'
   map.include_talk '/include/talk/:action/:id', :controller => 'list_talk', :action => 'create'

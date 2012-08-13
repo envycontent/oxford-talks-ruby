@@ -4,7 +4,7 @@ require 'tickles_controller'
 # Re-raise errors caught by the controller.
 class TicklesController; def rescue_action(e) raise e end; end
 
-class TicklesControllerTest < Test::Unit::TestCase
+class TicklesControllerTest < ActionController::TestCase
   fixtures :tickles, :lists
 
   def setup

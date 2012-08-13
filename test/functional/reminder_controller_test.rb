@@ -4,7 +4,7 @@ require 'reminder_controller'
 # Re-raise errors caught by the controller.
 class ReminderController; def rescue_action(e) raise e end; end
 
-class ReminderControllerTest < Test::Unit::TestCase
+class ReminderControllerTest < ActionController::TestCase
   
   fixtures :users, :lists, :email_subscriptions
   

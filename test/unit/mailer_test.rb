@@ -1,11 +1,11 @@
 require File.dirname(__FILE__) + '/../test_helper'
 require 'mailer'
 
-class MailerTest < Test::Unit::TestCase
+class MailerTest < ActiveSupport::TestCase
   CHARSET = "utf-8"
   include ActionMailer::Quoting
   fixtures :users, :lists, :talks, :list_lists, :list_talks, :email_subscriptions, :tickles
-  
+
   def setup
     Mailer.deliveries.clear
   end
@@ -32,18 +32,19 @@ class MailerTest < Test::Unit::TestCase
   
   def test_tickle
     message = Mailer.create_talk_tickle( tickles(:one) )
-    assert_equal "[Talks.cam] A talk that you might be interested in", message.subject
+    assert_equal "[talks.cam] A talk that you might be interested in", message.subject
     assert_equal "noreply@talks.cam.ac.uk", message.from[0]
     assert_match talks(:one).title, message.body
     
     message = Mailer.create_list_tickle( tickles(:two) )
-    assert_equal "[Talks.cam] A list that you might be interested in", message.subject
+    assert_equal "[talks.cam] A list that you might be interested in", message.subject
     assert_equal "noreply@talks.cam.ac.uk", message.from[0]
     assert_match lists(:one).name, message.body
   end
   
   def test_send_daily_list
     Mailer.send_daily_list
+
     EmailSubscription.find(:all).each do |subscription|
       mail = Mailer.deliveries.find { |mail| mail.to[0] == subscription.user.email }
       talks_in_mail = subscription.list.talks.find(:all,:conditions => ['start_time > ? AND start_time < ?',Time.now.at_beginning_of_day,Time.now.at_beginning_of_day+1.day])
@@ -77,7 +78,7 @@ class MailerTest < Test::Unit::TestCase
     
     # Create and check the message
     message = Mailer.create_daily_list( subscription )
-    assert_equal "[Talks.cam] Today's talks: #{list.name}", message.subject
+    assert_equal "[talks.cam] Today's talks: #{list.name}", message.subject
     check_message message, user, list, talks
   end
 
@@ -90,7 +91,7 @@ class MailerTest < Test::Unit::TestCase
     
     # Create and check the message
     message = Mailer.create_weekly_list( subscription )
-    assert_equal "[Talks.cam] This week's talks: #{list.name}", message.subject
+    assert_equal "[talks.cam] This week's talks: #{list.name}", message.subject
     check_message message, user, list, talks
   end
 

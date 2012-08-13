@@ -67,31 +67,17 @@ rescue LoadError
   require_gem 'RMagick'
 end
 
-module ActionView
-  module Helpers
-    module TextHelper
-      module_function :sanitize
-    end
-  end
-end
-
-RAVEN_SETTINGS = { 
-  # :raven_url 		=> 'https://demo.raven.cam.ac.uk/auth/authenticate.html',  
-   :raven_url 		=> 'https://raven.cam.ac.uk/auth/authenticate.html',
-  :raven_version => '1',
-  :max_skew 		=> 90, # seconds
-  :public_key_files => { 2 => File.join(File.dirname(__FILE__), 'pubkey2.txt') },
-#  :public_key_files => { 901 => File.join(File.dirname(__FILE__), 'pubkey901.txt') },
-  :description 	=> 'the talks.cam website',
-  :message 		=> 'we wish to track who makes what changes',
-  :aauth 			=> [],
-  :iact 			=> "",
-  :match_response_and_request => true,
-  :fail 			=> "",
-  }
+# TODO: Investigate if this needs changing. This method has been removed from TextHelper, and is not on SanitizeHelper (?)
+#module ActionView
+#  module Helpers
+#    module TextHelper
+#      module_function :sanitize
+#    end
+#  end
+#end
 
 # Configure the exception notification plugin
-ExceptionNotifier.exception_recipients = InstallationHelper::CURRENT_INSTALLATION.bugsEmail
+ExceptionNotifier.exception_recipients = InstallationHelper.CURRENT_INSTALLATION.bugsEmail
 ExceptionNotifier.sender_address =%( "talks.cam" <BUGS_SENDER@talks.cam> )
 
 # Monkey patch ActionMailer to force a return-path to be inserted

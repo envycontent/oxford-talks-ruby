@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ShowHelperTest < Test::Unit::TestCase
+class ShowHelperTest < ActionController::TestCase
   include ShowHelper
   
   def setup

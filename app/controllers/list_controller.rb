@@ -17,7 +17,7 @@ class ListController < ApplicationController
       flash[:confirm] = "Successfully created  &#145;#{@list.name}&#146;"
       if params[:return_to]
 	puts 'using return to'
-        redirect_to_path params[:return_to]
+        redirect_to params[:return_to]
       else
       	puts 'returning to list'
       	puts list_path(:id => @list.id)

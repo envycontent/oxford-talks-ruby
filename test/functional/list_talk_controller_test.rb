@@ -4,7 +4,7 @@ require 'list_talk_controller'
 # Re-raise errors caught by the controller.
 class ListTalkController; def rescue_action(e) raise e end; end
 
-class ListTalkControllerTest < Test::Unit::TestCase
+class ListTalkControllerTest < ActionController::TestCase
   
   fixtures :lists, :list_users, :users, :list_talks, :talks
   

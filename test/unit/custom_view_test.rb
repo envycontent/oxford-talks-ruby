@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class CustomViewTest < Test::Unit::TestCase
+class CustomViewTest < ActiveSupport::TestCase
   fixtures :custom_views
 
   # Replace this with your real tests.

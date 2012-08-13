@@ -1,0 +1,7 @@
+<h2>Log in</h2>
+
+<% inst = InstallationHelper.CURRENT_INSTALLATION %>
+<% puts request.class %>
+<%= link_to inst.localLoginLinkText + arrow, login_url(:action => inst.localLoginAction, :return_url => request.request_uri) %>
+<%= link_to 'Other users'+arrow, login_path(:action => 'other_users', :return_url => request.request_uri ) %>
+<%= link_to 'No account?'+arrow, new_user_url %>

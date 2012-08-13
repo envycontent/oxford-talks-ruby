@@ -4,7 +4,7 @@ require 'list_user_controller'
 # Re-raise errors caught by the controller.
 class ListUserController; def rescue_action(e) raise e end; end
 
-class ListUserControllerTest < Test::Unit::TestCase
+class ListUserControllerTest < ActionController::TestCase
   fixtures :lists, :users, :list_users
   
   def setup

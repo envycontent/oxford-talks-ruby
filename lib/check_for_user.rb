@@ -31,7 +31,7 @@ module CheckForUser
   end
   
   def user_from_http_header
-    InstallationHelper::CURRENT_INSTALLATION.user_from_http_header(request)
+    InstallationHelper.CURRENT_INSTALLATION.user_from_http_header(request)
   end
   
   # Can be overridden in individual controllers

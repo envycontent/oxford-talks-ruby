@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class TickleTest < Test::Unit::TestCase
+class TickleTest < ActiveSupport::TestCase
   fixtures :tickles, :users, :lists, :talks
 
   def test_polymorphic

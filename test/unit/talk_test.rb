@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class TalkTest < Test::Unit::TestCase
+class TalkTest < ActiveSupport::TestCase
   fixtures :talks, :lists, :list_talks, :list_lists, :users
 
   def test_find_public
@@ -66,7 +66,9 @@ class TalkTest < Test::Unit::TestCase
     t = test_add_to_lists_on_create
     t.destroy
 
-    assert_equal 2, t.lists.size
+    # Previously this test checked for 2, although that was on the assumption that the cache hadn't updated from the db.
+    # When upgrading rails, that assumption stopped working
+    assert_equal 0, t.lists(true).size
     # Have to make sure that a reload happens
     assert_equal 0, lists(:three).talks(true).size
     assert_equal 0, lists(:venue2).talks(true).size
@@ -275,6 +277,7 @@ class TalkTest < Test::Unit::TestCase
   
   def test_term
     lent = [ Time.local( 2005,1,1), Time.local(2005,3,31, 23, 59, 59) ]
+
     assert_equal lent, Talk.create( :start_time => lent.first ).term
     assert_equal lent, Talk.create( :start_time => lent.first + 10.days ).term
     assert_equal lent, Talk.create( :start_time => lent.last ).term

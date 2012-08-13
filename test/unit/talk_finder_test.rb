@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class TalkFinderTest < Test::Unit::TestCase
+class TalkFinderTest < ActiveSupport::TestCase
   
   def test_default
     tf = TalkFinder.new

@@ -1,4 +1,4 @@
-<% inst = InstallationHelper::CURRENT_INSTALLATION %>
+<% inst = InstallationHelper.CURRENT_INSTALLATION %>
 
 <%= link_to image_tag(inst.collegeOrUniversityLogoURL, :alt => '[' + inst.collegeOrUniversityName + ']', :class => 'logo'), inst.collegeOrUniversityURL %>
 <%= link_to image_tag(inst.talksBigLogoURL, :alt => '[' + inst.talksSiteName + ']', :class => 'logo'), home_url %>

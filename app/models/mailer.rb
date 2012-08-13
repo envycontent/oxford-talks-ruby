@@ -2,17 +2,13 @@ class Mailer < ActionMailer::Base
   
   include ActionController::UrlWriter
   
-  $inst = InstallationHelper::CURRENT_INSTALLATION
+  $inst = InstallationHelper.CURRENT_INSTALLATION
 
   default_url_options[:host] = HOST = $inst.talksSiteHost
   
-  Mailer.template_root = Mailer.template_root + "/installation_specific/" + $inst.installationName
-  
-  # FIXME: Refactor into class variables and set in environment.rb
 #  FROM = 'noreply@talks.cam.ac.uk'
   FROM = $inst.noReplyEmail
 
-  
   # The periodic mailshots
   
   def self.send_mailshots
@@ -34,6 +30,7 @@ class Mailer < ActionMailer::Base
   def self.send_daily_list
     EmailSubscription.find(:all).each do |subscription|
       mail = create_daily_list( subscription )
+      # Note, this assumes it's a multipart message, when we only really support text
       if mail.parts.first.body =~ /\(No talks\)/
         logger.info "No talks, so not sending message"
       else
@@ -54,7 +51,7 @@ class Mailer < ActionMailer::Base
   end
   
   def speaker_invite(user, talk)
-    @subject    = 'Giving a talk in ' + $inst.collegeOrUniversityName
+    @subject    = 'Giving a talk in ' + $inst.townName
     @body       = { :user => user, :url => talk_url(:id => talk.id, :action => 'edit'), :talk => talk }
     @recipients = user.email
     @cc         = talk.organiser.email if talk.organiser && talk.organiser.email

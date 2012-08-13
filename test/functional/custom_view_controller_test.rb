@@ -4,7 +4,7 @@ require 'custom_view_controller'
 # Re-raise errors caught by the controller.
 class CustomViewController; def rescue_action(e) raise e end; end
 
-class CustomViewControllerTest < Test::Unit::TestCase
+class CustomViewControllerTest < ActionController::TestCase
 
   fixtures :lists, :custom_views
 

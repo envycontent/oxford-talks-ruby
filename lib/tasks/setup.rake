@@ -38,12 +38,12 @@ namespace 'talks' do
     end
   end
   
-  desc 'Give admin privelages to a select few'
-  task :give_admin_privelages do
-    require File.dirname(__FILE__) + '/../../config/environment'
-    ['tamc2@cam.ac.uk','mackay@mrao.cam.ac.uk'].each do |email|
-      User.find_by_email(email).update_attribute('administrator',true)
-    end
-  end
+  #desc 'Give admin privelages to a select few'
+  #task :give_admin_privelages do
+  #  require File.dirname(__FILE__) + '/../../config/environment'
+  #  ['tamc2@cam.ac.uk','mackay@mrao.cam.ac.uk'].each do |email|
+  #    User.find_by_email(email).update_attribute('administrator',true)
+  #  end
+  #end
 
 end

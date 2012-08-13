@@ -24,14 +24,11 @@ class List < ActiveRecord::Base
   end
   
   def List.suggested_by_affiliation(user)
-    puts "Checking up for user"
     return nil if user == nil
     return nil if user.affiliation.nil?
     return nil if user.affiliation.empty?
 #    return nil
-    puts "Looking for lists"
     lists = List.find(:all, :conditions => ['? LIKE CONCAT(\'%\', name, \'%\')', user.affiliation])
-    puts lists
     return lists
   end
 

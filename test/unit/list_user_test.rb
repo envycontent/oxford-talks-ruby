@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ListUserTest < Test::Unit::TestCase
+class ListUserTest < ActiveSupport::TestCase
   fixtures :list_users, :users
 
   def test_user_email_setter

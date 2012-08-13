@@ -54,11 +54,11 @@ module ApplicationHelper
    end
    
    def arrow(alttext = 'details')
-     return image_tag InstallationHelper::CURRENT_INSTALLATION.arrowURL, :alt => alttext
+     return image_tag InstallationHelper.CURRENT_INSTALLATION.arrowURL, :alt => alttext
    end
 
    def favicon_tag
-      tag("link", "rel" => "shortcut icon", "href" => image_path(InstallationHelper::CURRENT_INSTALLATION.favIconURL))
+      tag("link", "rel" => "shortcut icon", "href" => image_path(InstallationHelper.CURRENT_INSTALLATION.favIconURL))
    end
    
    def logo( object, size = :small ) 
@@ -123,7 +123,7 @@ module ApplicationHelper
    end
    
    def page_title
-      [InstallationHelper::CURRENT_INSTALLATION.talksSiteName,@list && @list.name, @talk && @talk.title, @user && @user.name ].compact.join(' : ')
+      [InstallationHelper.CURRENT_INSTALLATION.talksSiteName,@list && @list.name, @talk && @talk.title, @user && @user.name ].compact.join(' : ')
    end
    
    def javascripts
@@ -133,7 +133,7 @@ module ApplicationHelper
    end
 
    def stylesheets
-     ['talks-screen','calendar-blue', InstallationHelper::CURRENT_INSTALLATION.styleSheet].map do |stylesheet|
+     ['talks-screen','calendar-blue', InstallationHelper.CURRENT_INSTALLATION.styleSheet].map do |stylesheet|
        stylesheet_link_tag stylesheet, :media => 'all'
      end.join "\n"
    end

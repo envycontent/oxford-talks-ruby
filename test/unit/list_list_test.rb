@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ListListTest < Test::Unit::TestCase
+class ListListTest < ActiveSupport::TestCase
   fixtures :lists, :list_lists
 
   def test_children
