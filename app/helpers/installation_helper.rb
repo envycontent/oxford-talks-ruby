@@ -69,8 +69,13 @@ module InstallationHelper
     end
 
     def local_user_from_id(id)
-      `kinit -k -t /etc/ldap/keytab webauth/talks.linacre.ox.ac.uk`
-
+      # Note that for this to work, we need a valid kerberos ticket
+      # at this point. One way is to go:
+      #    kinit -k -t /etc/keytab services/hostname`
+      # annother is to use k5start (see
+      # http://www.eyrie.org/~eagle/software/kstart/k5start.html)
+      # and a set KRB5CCNAME in the apache config
+      # This is what we are doing
       conn = LDAP::SSLConn.new(host='ldap.oak.ox.ac.uk', port=636)
       #conn.sasl_quiet=true
       conn.sasl_bind('','')
