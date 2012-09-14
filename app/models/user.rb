@@ -27,7 +27,6 @@ class User < ActiveRecord::Base
     return user if user
     # No email, so create
     user = InstallationHelper.CURRENT_INSTALLATION.local_user_from_id(crsid)
-    puts user.email
     return user
   end
   

@@ -16,8 +16,10 @@ class ImageControllerTest < ActionController::TestCase
   end
   
   def test_routing
+    #assert_routing '/image/show/1/image.png/200x200', {:controller => 'image', :action => 'show', :id => '1', :geometry => '200x200'}
+
     with_options :controller => 'image', :id => '1', :action => 'show' do |test|
-      test.assert_routing '/image/show/1/image.png;200x200', :geometry => '200x200'
+      test.assert_routing '/image/show/1/image.png/200x200', :geometry => '200x200'
     end
   end
   

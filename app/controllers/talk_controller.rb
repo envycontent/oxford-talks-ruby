@@ -79,9 +79,6 @@ class TalkController < ApplicationController
         end
 	return true
       end
-#      raise CannotAddList, "Testing..."
-      puts "New Talk"
-      puts params[:talk]
       @talk = Talk.new unless find_talk
       @talk.attributes = params[:talk]
       return false unless user_can_edit_talk?       

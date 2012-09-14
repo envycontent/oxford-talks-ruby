@@ -80,8 +80,6 @@ module InstallationHelper
       conn.search('ou=people,dc=oak,dc=ox,dc=ac,dc=uk', LDAP::LDAP_SCOPE_ONELEVEL, 
         "(oakPrincipal=krbPrincipalName=#{id}@OX.AC.UK,cn=OX.AC.UK,cn=KerberosRealms,dc=oak,dc=ox,dc=ac,dc=uk)", nil) { |entry|
         email = entry.get_values("mail")[0]
-	puts "local_user_from_id email is"
-	puts email
         name = entry.get_values("displayName")[0]
         sep = ", "
         ouValues = entry.get_values("ou")

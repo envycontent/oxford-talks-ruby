@@ -14,9 +14,10 @@ class DocumentControllerTest < ActionController::TestCase
   end
   
   def test_routing
+    print "XXXX Testing Document Routing"
     with_options :controller => 'document', :action => 'show' do |r|
-      r.assert_routing "/document/this+is+a+good+idea", :name => 'this is a good idea'
-      r.assert_routing "/document/this+is+a+good+idea+for+talks.cam", :name => 'this is a good idea for talks.cam'
+      r.assert_routing "/document/this%20is%20a%20good%20idea", :name => 'this is a good idea'
+      r.assert_routing "/document/this%20is%20a%20good%20idea%20for%20talks.cam", :name => 'this is a good idea for talks.cam'
       # Can't find where this modification is supposed to happen, so removed the +s from the test for the time being
       #r.assert_routing "/document/this+is+a+good+idea", :name => 'this is a good idea'
       #r.assert_routing "/document/this+is+a+good+idea+for+talks.cam", :name => 'this is a good idea for talks.cam'

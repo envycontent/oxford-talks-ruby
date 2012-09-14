@@ -6,9 +6,6 @@ class DocumentTest < ActiveSupport::TestCase
   def test_xss_prevention
     document = Document.new
 
-    puts "XXX new document"
-    puts document.name
-    
     document.name = "Test <tags> are </tags> <escaped/>"
     document.save
     assert_equal "test &lt;tags&gt; are &lt;/tags&gt; &lt;escaped/&gt;", document.name

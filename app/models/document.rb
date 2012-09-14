@@ -31,6 +31,7 @@ class Document < ActiveRecord::Base
   
   def update_html
     self.name = self.name.underscore
+    print self.name
     return true unless body
     self.user = User.current
     linked_body = body.gsub(PAGE_LINK) { link( $1, $2 ) }

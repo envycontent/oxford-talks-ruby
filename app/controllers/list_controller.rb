@@ -10,17 +10,13 @@ class ListController < ApplicationController
   end
   
   def create
-    puts request.protocol
     @list = List.new params[:list]
     if @list.save
       @list.users << User.current
       flash[:confirm] = "Successfully created  &#145;#{@list.name}&#146;"
       if params[:return_to]
-	puts 'using return to'
         redirect_to params[:return_to]
       else
-      	puts 'returning to list'
-      	puts list_path(:id => @list.id)
         redirect_to list_path(:id => @list.id)
       end
     else
