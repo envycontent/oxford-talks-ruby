@@ -1,5 +1,8 @@
 require "#{File.dirname(__FILE__)}/../test_helper"
 
+require 'rexml/document'
+include REXML
+
 class LoginTest < ActionController::IntegrationTest
     fixtures :users, :lists, :talks
 
@@ -10,13 +13,15 @@ class LoginTest < ActionController::IntegrationTest
         bob.goes_to_account_request
         bob.signs_up_as :user => { :email => 'bob@talks.cam', :send_email => 1 }
         bob.gets_an_email_with_login_details 'bob@talks.cam'
-        bob.goes_to_login
-        bob.logs_in 'bob@talks.cam'
-        bob.sent_to_new_user_page?
-        # bob.submits_new_user_page(:send_email => 1)
-        # bob.sent_to_personal_list?
-        # assert_equal bob.personal_list, bob.email_subscriptions.first.list
-        bob.logs_out
+        password_reset_email = bob.email_for 'bob@talks.cam'
+        bob.goes_to_password_reset password_reset_email
+        #bob.goes_to_login
+        #bob.logs_in 'bob@talks.cam'
+        #bob.sent_to_new_user_page?
+        ## bob.submits_new_user_page(:send_email => 1)
+        ## bob.sent_to_personal_list?
+        ## assert_equal bob.personal_list, bob.email_subscriptions.first.list
+        #bob.logs_out
       end
       
       # Next time gets taken straight to personal list
@@ -46,6 +51,13 @@ class LoginTest < ActionController::IntegrationTest
      
       attr_accessor :user
      
+      def goes_to_password_reset(password_reset_email)
+        email_dom = Document.new(password_reset_email.body)
+        password_reset_url = XPath(email_dom, "//a/[text()=='Reset my password']/@href").first
+        get password_reset_url
+        assert_response :success
+      end
+
       def goes_to_login
         get login_url
         assert_response :success
@@ -63,7 +75,7 @@ class LoginTest < ActionController::IntegrationTest
         post user_url(:action => 'create'), details
         user = assigns(:user)
         assert_response :redirect
-        assert_redirected_to user_url(:action => "password_sent")
+        assert_redirected_to user_url(:action => "password_reset_sent")
       end
      
       def email_for( address )
@@ -75,14 +87,14 @@ class LoginTest < ActionController::IntegrationTest
       end
      
       def gets_an_email_with_login_details( address )
-        assert_equal 1, email_for(address).find_all{ |mail| mail.subject == 'Your talks.cam password' }.size
+        assert_equal 1, email_for(address).find_all{ |mail| mail.subject == 'Your talks.cam password reset' }.size
       end
      
       def logs_in( email = nil, return_url = nil )
          @user = User.find_by_email email
          params = { :email => user.email, :password => user.password }
          params[:return_url] = return_url if return_url
-         post login_url(:action=>'not_raven_login'), params
+         post login_url(:action=>'external_user_login'), params
       end
      
       def logs_out

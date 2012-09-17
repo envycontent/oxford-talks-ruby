@@ -32,6 +32,7 @@ ActionController::Routing::Routes.draw do |map|
   map.user 'user/:action/:id', :controller => 'user', :action => 'show'
   map.talk 'talk/:action/:id', :controller => 'talk', :action => 'index'
   map.login 'login/:action', :controller => 'login', :action => 'index'
+  map.reset_password 'user/password_reset/:id/:password_reset_key', :controller => 'user', :action => 'reset_password'
   map.reminder 'reminder/:action/:id', :controller => 'reminder', :action => 'index'
   map.include_list '/include/list/:action/:id', :controller => 'list_list', :action => 'create'
   map.include_talk '/include/talk/:action/:id', :controller => 'list_talk', :action => 'create'

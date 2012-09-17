@@ -5,13 +5,12 @@ module InstallationHelper
   class Installation
     attr_reader :installationName, :bugsEmail, :webmasterEmail, :noReplyEmail, :talksSmallLogoURL, :talksBigLogoURL, :favIconURL, :arrowURL,
       :talksSiteName, :talksSiteHost, :collegeOrUniversityName, :townName, :collegeOrUniversityLogoURL, :collegeOrUniversityURL,
-      :collegeOrUniversityExampleEmail, :localLoginLinkText, :loginSystemName, :localLoginAction, :nonLocalLoginAction,
+      :collegeOrUniversityExampleEmail, :localLoginLinkText, :loginSystemName, :localLoginAction,
       :loginController, :styleSheet, :footerMessage, :searchExample
   
     def initialize(installationName, bugsEmail, webmasterEmail, noReplyEmail, talksSmallLogoURL, talksBigLogoURL, favIconURL, arrowURL, talksSiteName,
       talksSiteHost, collegeOrUniversityName, townName, collegeOrUniversityLogoURL, collegeOrUniversityURL,
-      collegeOrUniversityExampleEmail, localLoginLinkText, loginSystemName, localLoginAction, nonLocalLoginAction,
-      loginController, styleSheet, footerMessage, searchExample)
+      collegeOrUniversityExampleEmail, localLoginLinkText, loginSystemName, localLoginAction, loginController, styleSheet, footerMessage, searchExample)
       @installationName = installationName
       @bugsEmail = bugsEmail
       @webmasterEmail = webmasterEmail
@@ -30,7 +29,6 @@ module InstallationHelper
       @localLoginLinkText = localLoginLinkText
       @loginSystemName = loginSystemName
       @localLoginAction = localLoginAction
-      @nonLocalLoginAction = nonLocalLoginAction
       @loginController = loginController
       @styleSheet = styleSheet
       @footerMessage = footerMessage
@@ -47,8 +45,8 @@ module InstallationHelper
       super('oxford', 'talks@linacre.ox.ac.uk', 'talks@linacre.ox.ac.uk', 'noreply@linacre.ox.ac.uk', 'OxfordTalksLogo.png', 
       	'OxfordTalksLogo.png', 'favicon-ox.ico', 'redarrow.gif',
         'Oxford Talks', 'talks.linacre.ox.ac.uk', 'University of Oxford', 'Oxford', 'identifier2-ox.gif', 'http://www.ox.ac.uk',
-        'first.lastname@departmentOrCollege.ox.ac.uk', 'Oxford users (SSO)', 'SSO (Single Sign On)', 'go_to_secure_webauth',
-        'external_user_login', Login::OxfordssologinController, 'talks-screen-ox',
+        'first.lastname@college_or_department.ox.ac.uk', 'Oxford users (SSO)', 'SSO (Single Sign On)', 'go_to_secure_webauth',
+        Login::OxfordssologinController, 'talks-screen-ox',
         'Oxford Talks is based on talks.cam which is &copy; University of Cambridge.', 'e.g. africa, ageing, maths')
     end
 
@@ -61,7 +59,7 @@ module InstallationHelper
       return nil unless AuthenticationHelper.authorization(request)
       return nil if AuthenticationHelper.authorization(request).empty?
 
-      return User.find_by_email_and_password(*AuthenticationHelper.email_and_password(request))
+      return User.authenticate(*AuthenticationHelper.email_and_password(request))
     end
 
     def webauth_username(request)
@@ -98,7 +96,7 @@ module InstallationHelper
     def initialize()
       super('cambridge', %w( BUGS@talks.cam ), 'webmaster@talks.cam.ac.uk', 'noreply@talks.cam.ac.uk', 'talkslogosmall.gif', 'reallybigtalkslogo.gif',
         'favicon-cam.ico', 'redarrow.gif', 'talks.cam', 'talks.cam.ac.uk', 'University of Cambridge', 'Cambridge', 'identifier2.gif',
-        'http://www.cam.ac.uk', 'crsid@cam.ac.uk', 'Cambridge users (raven)', 'raven', 'go_to_raven', 'not_raven_login',
+        'http://www.cam.ac.uk', 'crsid@cam.ac.uk', 'Cambridge users (raven)', 'raven', 'go_to_raven',
         Login::RavenloginController, 'talks-screen-cam', '&copy; 2006-2009 talks.cam, University of Cambridge',
         'e.g. Surfaces and strings, Darwin lectures, Thomas Young, meerkat, Lord Adonis')
     end
@@ -106,7 +104,7 @@ module InstallationHelper
     def user_from_http_header(request)
       return nil unless AuthenticationHelper.authorization(request)
       return nil if AuthenticationHelper.authorization(request).empty?
-      User.find_by_email_and_password(*AuthenticationHelper.email_and_password(request))
+      User.authenticate(*AuthenticationHelper.email_and_password(request))
     end
 
     def local_user_from_id(id)
@@ -141,8 +139,8 @@ module InstallationHelper
     end
   end
   
-  @@CURRENT_INSTALLATION = OxfordInstallation.new
-  #@@CURRENT_INSTALLATION = CambridgeInstallation.new
+  #@@CURRENT_INSTALLATION = OxfordInstallation.new
+  @@CURRENT_INSTALLATION = CambridgeInstallation.new
 
   def self.CURRENT_INSTALLATION
     return @@CURRENT_INSTALLATION

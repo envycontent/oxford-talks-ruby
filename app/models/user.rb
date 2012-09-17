@@ -1,3 +1,5 @@
+require 'bcrypt'
+
 class User < ActiveRecord::Base
 
   # This is used as an easier way of accessing who is the current user
@@ -48,10 +50,42 @@ class User < ActiveRecord::Base
   # Life cycle actions
   before_save :update_crsid_from_email
   before_save :update_name_in_sort_order
-  before_create :randomize_password
+  before_create :create_password_reset_key
   after_create :create_personal_list
-  after_create :send_password_if_required
+  after_create :send_password_reset_request
+
+  # For encrypting the password in the db
+  before_save :hash_password
   
+  def hash_password
+    if not self.password.nil?
+      write_attribute(:hashed_password, BCrypt::Password.create(self.password))
+    end
+  end
+
+  def authenticate(password)
+    logger.error "XXXXXXX"
+    logger.error password
+    logger.error self.hashed_password
+    logger.error BCrypt::Password.new(self.hashed_password)
+    logger.error BCrypt::Password.new(self.hashed_password).is_password? password
+    if not self.hashed_password.nil? and BCrypt::Password.new(self.hashed_password).is_password? password
+      return true
+    else
+      return false
+    end
+  end
+
+  def self.authenticate(email, password)
+    user = find_by_email(email)
+    if user
+      if user.authenticate(password)
+        return user
+      end
+    end
+    return nil
+  end
+
   # Try and prevent xss attacks
   include PreventScriptAttacks
   include CleanUtf # To try and prevent any malformed utf getting in
@@ -87,32 +121,19 @@ class User < ActiveRecord::Base
     new_status
   end
   
-  # Only accept new passwords when some confirmation is done
-  attr_accessor :password_confirmation
-  attr_accessor :existing_password
-  attr_accessor :old_password
-  attr_accessor :changing_password
+  attr_accessor :password
   
-  def password=(new_password)
-    self.changing_password = true
-    self.old_password = password
-    write_attribute(:password, new_password)
-  end
-  
-  def validate
-    if changing_password
-      errors.add(:existing_password,"must match your existing password.") unless existing_password == old_password
-      errors.add(:password_confirmation,"must match your new password.") unless password_confirmation == password
-    end
-  end
-  
-  # ten digit password
-  def randomize_password( size = 10 )
+  def generate_random_chars(size = 10)
     chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
-    newpassword = ""
-    1.upto(size) { |i| newpassword << chars[rand(chars.size-1)] }
-    write_attribute(:password, newpassword)
+    new_stuff = ""
+    1.upto(size) { |i| new_stuff << chars[rand(chars.size-1)] }
+    return new_stuff
   end
+
+  # ten digit password
+  #def randomize_password( size = 10 )
+  #  write_attribute(:password, generate_random_chars(size))
+  #end
   
   # After creating a user, create their personal list
   def create_personal_list
@@ -125,17 +146,26 @@ class User < ActiveRecord::Base
     self.lists << list
   end
   
-  # After creating a user, send them an e-mail with their password if this is set
+  # Do we send this user emails, in general (?)
   attr_accessor :send_email
-  
-  def send_password_if_required
-    send_password if send_email
+
+#  def send_password_if_required
+#    send_password if send_email
+#  end
+
+  def create_password_reset_key
+    write_attribute(:password_reset_key, generate_random_chars(size=20))
   end
   
-  def send_password
-    email = Mailer.create_password( self )
+  def send_password_reset_request
+    email = Mailer.create_password_reset(self)
     Mailer.deliver email
   end
+
+#  def send_password
+#    email = Mailer.create_password( self )
+#    Mailer.deliver email
+#  end
   
   def personal_list
     lists.first

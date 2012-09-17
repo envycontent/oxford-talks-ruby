@@ -41,7 +41,7 @@ class TalkCreateTest < ActionController::IntegrationTest
         @user = User.find_by_email email
         params = { :email => user.email, :password => user.password }
         params[:return_url] = return_url if return_url
-        post login_url(:action=>'not_raven_login'), params
+        post login_url(:action=>'external_user_login'), params
      end
      
      def logs_out

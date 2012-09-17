@@ -22,7 +22,7 @@ class LoginControllerTest < ActionController::TestCase
   
   def test_new_user_page
     user = User.create :email => 'bob2@talks.cam'
-    post :not_raven_login, {:email => user.email,:password => user.password }
+    post :external_user_login, {:email => user.email,:password => user.password }
     assert_response :redirect
     assert_redirected_to user_url(:action => 'edit', :id => user.id)
   end

@@ -8,9 +8,9 @@ class UserTest < ActiveSupport::TestCase
     assert_equal false, public_users.any? {|user| user.ex_directory?}
   end
   
-  def test_password_generated_upon_create
+  def test_password_is_nil_on_create
     user = User.create :name => 'bob', :email => 'not an email'
-    assert_not_nil user.password
+    assert_nil user.password
   end
   
   def test_search
@@ -40,7 +40,8 @@ class UserTest < ActiveSupport::TestCase
     user = User.create! :name => 'bob', :email => 'webmaster@talks.cam.ac.uk', :send_email => true
     assert Mailer.deliveries.find { |mail| mail.to && (mail.to[0] == user.email) }
     user = User.create! :name => 'bill', :email => 'webmaster2@talks.cam.ac.uk'
-    assert !Mailer.deliveries.find { |mail| mail.to && (mail.to[0] == user.email) }
+    # We always send the password reset. Why would we check the send_email paramater? Surely that's only for reminders?
+    assert Mailer.deliveries.find { |mail| mail.to && (mail.to[0] == user.email) }
   end
   
   def test_subscribe
@@ -134,24 +135,29 @@ class UserTest < ActiveSupport::TestCase
   end
   
   def test_ability_to_update_password
-    # Can't just do it
+    # Now you can just do it!
     user = User.create!(:email=>'passwordchanger')
     user.password = 'a new password'
-    assert_equal false, user.save
-    assert user.errors.on(:existing_password)
-    
-    # Must have a matching confirmation
-    user.existing_password = user.password
-    user.password = 'a new password'
-    user.password_confirmation = 'a different password'
-    assert_equal false, user.save
-    assert user.errors.on(:password_confirmation)
-
-    # Must have the existing password as well
-    user.existing_password = user.password
-    user.password = 'a new password'
-    user.password_confirmation = 'a new password'
     assert_equal true, user.save
+
+#    # Can't just do it
+#    user = User.create!(:email=>'passwordchanger')
+#    user.password = 'a new password'
+#    assert_equal false, user.save
+#    assert user.errors.on(:existing_password)
+#    
+#    # Must have a matching confirmation
+#    user.existing_password = user.password
+#    user.password = 'a new password'
+#    user.password_confirmation = 'a different password'
+#    assert_equal false, user.save
+#    assert user.errors.on(:password_confirmation)
+#
+#    # Must have the existing password as well
+#    user.existing_password = user.password
+#    user.password = 'a new password'
+#    user.password_confirmation = 'a new password'
+#    assert_equal true, user.save
   end
   
   def test_ability_to_add_an_image

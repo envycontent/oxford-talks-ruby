@@ -41,14 +41,23 @@ class Mailer < ActionMailer::Base
   
   # The mails
   
-  def password(user, url = "http://" + $inst.talksSiteHost + "/login/other_users")
-    @subject    = 'Your ' + $inst.talksSiteName + ' password'
+  def password_reset(user, url = "http://" + $inst.talksSiteHost + "/login/other_users")
+    @subject    = 'Your ' + $inst.talksSiteName + ' password reset'
     @body       = { :user => user, :url => login_url(:action => 'other_users') }
     @recipients = user.email
     @from       = FROM
     @sent_on    = Time.now
     @headers    = {}
   end
+
+#  def password(user, url = "http://" + $inst.talksSiteHost + "/login/other_users")
+#    @subject    = 'Your ' + $inst.talksSiteName + ' password'
+#    @body       = { :user => user, :url => login_url(:action => 'other_users') }
+#    @recipients = user.email
+#    @from       = FROM
+#    @sent_on    = Time.now
+#    @headers    = {}
+#  end
   
   def speaker_invite(user, talk)
     @subject    = 'Giving a talk in ' + $inst.townName

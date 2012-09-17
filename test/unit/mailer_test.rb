@@ -11,11 +11,14 @@ class MailerTest < ActiveSupport::TestCase
   end
 
   def test_password
-    message = Mailer.create_password( users(:vic), 'http://test.url' )
-    assert_equal "Your talks.cam password", message.subject
+    user = users(:vic)
+    user.create_password_reset_key
+    message = Mailer.create_password_reset( user, 'http://test.url' )
+    assert_equal "Your talks.cam password reset", message.subject
     assert_equal users(:vic).email, message.to[0]
     assert_equal "noreply@talks.cam.ac.uk", message.from[0]
-    assert_match "password: #{users(:vic).password}", message.body
+    assert_match "Reset my password", message.body
+#    assert_match "password: #{users(:vic).password}", message.body
   end
   
   def test_speaker_invite

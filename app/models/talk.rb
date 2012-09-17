@@ -241,7 +241,7 @@ class Talk < ActiveRecord::Base
     return unless send_speaker_email == '1'
     return true unless speaker_email && speaker_email =~ /.*?@.*?\..*/
     Mailer.deliver_speaker_invite( speaker, self )
-    speaker.send_password
+#    speaker.send_password
   end
   
   # FIXME: Refactor with the code in the show controller

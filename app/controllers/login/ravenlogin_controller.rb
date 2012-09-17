@@ -51,24 +51,7 @@ class Login::RavenloginController < ApplicationController
 	 session["return_to"] = nil
 	 flash[:confirm] = "You have been logged out."
 	end
-	
-  def not_raven_login
-    user = User.find_by_email params[:email]
-    if user
-      if user.password && params[:password] == user.password
-        session[:user_id ] = user.id
-        post_login_actions
-    	else
-  	    flash[:login_error] = "Password not correct"
-  	    @email = user.email
-  	    render :action => 'index'
-  	  end
-    else
-      flash[:login_error] = "I have no record of this email"
-      render :action => 'index'
-    end
-  end
-  
+	  
   def go_to_raven
 		#Store a random number in params so we can match this request to later responses
 		raven_params = session[:request_id] = rand( 999999 ).to_s
@@ -129,17 +112,6 @@ class Login::RavenloginController < ApplicationController
 		session[:user_id] = User.find_or_create_by_crsid(principal).id
 		post_login_actions
 	end
-
-  def send_password
-    @user = User.find_by_email params[:email]
-    if @user
-      @user.send_password
-      render :action => 'password_sent'
-    else
-      flash[:error] = "I'm sorry, but #{params[:email]} is not listed on this system. (note that is is case sensitive)"
-      render :action => 'lost_password'
-    end
-  end
   
   def new_user
     @user = User.find session[:user_id]
@@ -164,17 +136,6 @@ class Login::RavenloginController < ApplicationController
   end
 
   private
-  
-  def post_login_actions
-    user = User.find(session[:user_id])
-    if user.needs_an_edit?
-      redirect_to user_url(:action => 'edit',:id => user )
-    else
- 		  return_to_original_url
- 		end
-	  flash[:confirm] = "You have been logged in."
-	  user.update_attribute :last_login, Time.now
-  end
   
   def original_url
     original_url = session["return_to"] || list_url(:id => User.find(session[:user_id]).personal_list )

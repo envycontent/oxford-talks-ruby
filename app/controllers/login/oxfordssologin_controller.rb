@@ -5,32 +5,10 @@ require 'base64'
 class Login::OxfordssologinController < ApplicationController
   before_filter :store_return_url_in_session
 
-	def store_return_url_in_session
-    session["return_to"] = params[:return_url] if (params[:return_url] && params[:return_url] != '/login/logout') 
-	end
-
   def go_to_secure_webauth
     # Going to https will require webauth authentication
     #returnTo = (params[:return_url].nil? ? "/" : params[:return_url])
     redirect_to "https://" + request.host + (original_url.nil? ? "" : original_url)
-  end
-
-  def external_user_login
-    puts "External User Login"
-    user = User.find_by_email params[:email]
-    if user
-      if user.password && params[:password] == user.password
-        session[:user_id ] = user.id
-        post_login_actions
-    	else
-  	    flash[:login_error] = "Password not correct"
-  	    @email = user.email
-  	    render :action => 'index'
-  	  end
-    else
-      flash[:login_error] = "I have no record of this email"
-      render :action => 'index'
-    end
   end
 
 	def logout
@@ -51,17 +29,6 @@ class Login::OxfordssologinController < ApplicationController
     end
 	end
 
-  def send_password
-    @user = User.find_by_email params[:email]
-    if @user
-      @user.send_password
-      render :action => 'password_sent'
-    else
-      flash[:error] = "I'm sorry, but #{params[:email]} is not listed on this system. (note that is is case sensitive)"
-      render :action => 'lost_password'
-    end
-  end
-
   def return_to_original_url
     redirect_to original_url
     session["return_to"] = nil
@@ -74,15 +41,8 @@ class Login::OxfordssologinController < ApplicationController
 
   private
 
-  def post_login_actions
-    user = User.find(session[:user_id])
-    if user.needs_an_edit?
-      redirect_to user_url(:action => 'edit',:id => user )
-    else
- 		  return_to_original_url
- 		end
-	  flash[:confirm] = "You have been logged in."
-	  user.update_attribute :last_login, Time.now
-  end
+	def store_return_url_in_session
+    session["return_to"] = params[:return_url] if (params[:return_url] && params[:return_url] != '/login/logout') 
+	end
 end
 

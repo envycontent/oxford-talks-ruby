@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 28) do
+ActiveRecord::Schema.define(:version => 30) do
 
   create_table "custom_views", :force => true do |t|
     t.string  "name"
@@ -21,15 +21,16 @@ ActiveRecord::Schema.define(:version => 28) do
   end
 
   create_table "document_versions", :force => true do |t|
-    t.integer  "document_id"
-    t.integer  "version"
-    t.string   "name"
-    t.text     "body"
-    t.text     "html"
-    t.datetime "updated_at"
-    t.integer  "user_id"
-    t.string   "administrator_only"
+    t.integer "document_id"
+    t.integer "version"
+    t.string  "name"
+    t.text    "body"
+    t.text    "html"
+    t.integer "user_id"
+    t.string  "administrator_only"
   end
+
+  add_index "document_versions", ["document_id"], :name => "index_document_versions_on_document_id"
 
   create_table "documents", :force => true do |t|
     t.string  "name"
@@ -165,17 +166,18 @@ ActiveRecord::Schema.define(:version => 28) do
   create_table "users", :force => true do |t|
     t.string   "email"
     t.string   "name"
-    t.string   "password",           :limit => 50
-    t.string   "affiliation",        :limit => 75
-    t.integer  "administrator",                    :default => 0,    :null => false
+    t.string   "affiliation",        :limit => 200
+    t.integer  "administrator",                     :default => 0,    :null => false
     t.integer  "old_id"
     t.datetime "last_login"
     t.string   "crsid"
     t.integer  "image_id"
     t.string   "name_in_sort_order"
-    t.boolean  "ex_directory",                     :default => true
+    t.boolean  "ex_directory",                      :default => true
     t.time     "created_at"
     t.time     "updated_at"
+    t.string   "hashed_password",    :limit => 60
+    t.string   "password_reset_key", :limit => 60
   end
 
   add_index "users", ["crsid"], :name => "index_users_on_crsid"

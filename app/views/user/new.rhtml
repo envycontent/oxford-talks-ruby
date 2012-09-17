@@ -13,7 +13,7 @@
 	<%= submit_tag 'Request an account' %>
 	 or 
 	<%= link_to "login using #{inst.loginSystemName}", login_url(:action => inst.localLoginAction) %>. 
-	A password will then be e-mailed to you.</p>
+	A password reset will then be e-mailed to you.</p>
 	
 	<p>If you are part of the <%= inst.collegeOrUniversityName%> please use your <%=inst.collegeOrUniversityExampleEmail %> email. This will allow you to use login with <%= inst.loginSystemName %>.</p>
 <% end %>
