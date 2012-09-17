@@ -2,5 +2,5 @@
 DEADJOE
 log/
 .svn
-
+config/database.yml
 
