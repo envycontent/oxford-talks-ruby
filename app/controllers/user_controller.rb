@@ -77,11 +77,7 @@ class UserController < ApplicationController
       flash[:confirm] = 'Saved.'
       redirect_to user_url(:id => @user.id)
     else
-#      if params[:user][:password] # Then we must be trying to change the password and have failed
-#        render :action => 'change_password'
-#      else
       render :action => 'edit'
-#      end
     end
   end
 end
