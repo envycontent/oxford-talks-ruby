@@ -1,11 +1,13 @@
 xml.instruct!
 
 xml.list do 
-  xml.id @list.id
-  xml.name @list.name
-  xml.details @list.details
-  xml.url list_url(:id => @list.id)
-  
+  if @list
+    xml.id @list.id
+    xml.name @list.name
+    xml.details @list.details
+    xml.url list_url(:id => @list.id)
+  end
+
   @errors.each do |error|
   	xml.error error
   end
@@ -16,14 +18,26 @@ xml.list do
       xml.title talk.title
       xml.abstract talk.abstract
       xml.speaker talk.name_of_speaker
-      xml.venue talk.venue.name
+      if talk.venue
+        xml.venue talk.venue.name
+      end
       xml.special_message talk.special_message
       xml.url talk_url(:id => talk.id )
       
       xml.start_time talk.start_time.to_formatted_s(:rfc822)
       xml.end_time talk.end_time.to_formatted_s(:rfc822)
-      xml.series talk.series.name
-      
+      xml.series talk.series.id
+
+      (talk.lists | [talk.series]).each do |list|
+        if not list.ex_directory
+          xml.list do
+            xml.id list.id
+            xml.name list.name
+            xml.type list.type
+          end
+        end
+      end
+ 
       if talk.created_at && talk.updated_at      
         xml.created_at talk.created_at.to_formatted_s(:rfc822)
         xml.updated_at talk.updated_at.to_formatted_s(:rfc822)

@@ -50,9 +50,10 @@ class ShowController < ApplicationController
   end
   
   def decode_time_period
-    if params[:id] == "all"
-      @talks = Talk.find(:all)
-      @talks.delete_if { |talk| talk.ex_directory? }
+    if params[:id] == "all_future"
+      @list = nil
+      @talks = Talk.find(:all, :conditions => ["ex_directory = FALSE and start_time > ?", DateTime.now])
+      @errors = []
     else
       @list = List.find params[:id]
       finder = TalkFinder.new(params)
