@@ -23,7 +23,7 @@ class PeriodicTasks
     end
 
     RAILS_DEFAULT_LOGGER.info("PeriodicTasks.daily @ #{Time.now}: About to purge old sessions")
-    CGI::Session::ActiveRecordStore::Session.delete_all( ['updated_at < ?', 1.week.ago ] ) # Purge our old session table
+    ActiveRecord::SessionStore::Session.delete_all( ['updated_at < ?', 1.week.ago ] ) # Purge our old session table
 
     RAILS_DEFAULT_LOGGER.info("PeriodicTasks.daily @ #{Time.now}: About to call RelatedList.update_all_lists_and_talks")
     RelatedList.update_all_lists_and_talks
