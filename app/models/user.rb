@@ -24,10 +24,19 @@ class User < ActiveRecord::Base
   
   def User.sort_field; 'name_in_sort_order' end
   
+  def User.find_or_create_by_email_including_locals(email)
+    local_id = InstallationHelper.CURRENT_INSTALLATION.local_id_from_email(email)
+    if not local_id.nil?
+      return User.find_or_create_by_crsid(local_id)
+    else
+      return User.find_or_create_by_email(email)
+    end
+  end
+
   def User.find_or_create_by_crsid( crsid )
     user = User.find_by_crsid crsid
     return user if user
-    # No email, so create
+    # No crsid, so create
     user = InstallationHelper.CURRENT_INSTALLATION.local_user_from_id(crsid)
     return user
   end
@@ -64,11 +73,6 @@ class User < ActiveRecord::Base
   end
 
   def authenticate(password)
-    logger.error "XXXXXXX"
-    logger.error password
-    logger.error self.hashed_password
-    logger.error BCrypt::Password.new(self.hashed_password)
-    logger.error BCrypt::Password.new(self.hashed_password).is_password? password
     if not self.hashed_password.nil? and BCrypt::Password.new(self.hashed_password).is_password? password
       return true
     else
@@ -99,6 +103,7 @@ class User < ActiveRecord::Base
   end
   
   def update_crsid_from_email
+    # TODO: Move this to installation helper, it is Cambridge specific
     return unless email =~ /^([a-z0-9]+)@cam.ac.uk$/i
     self.crsid = $1
   end
@@ -129,11 +134,6 @@ class User < ActiveRecord::Base
     1.upto(size) { |i| new_stuff << chars[rand(chars.size-1)] }
     return new_stuff
   end
-
-  # ten digit password
-  #def randomize_password( size = 10 )
-  #  write_attribute(:password, generate_random_chars(size))
-  #end
   
   # After creating a user, create their personal list
   def create_personal_list
@@ -149,10 +149,6 @@ class User < ActiveRecord::Base
   # Do we send this user emails, in general (?)
   attr_accessor :send_email
 
-#  def send_password_if_required
-#    send_password if send_email
-#  end
-
   def create_password_reset_key
     write_attribute(:password_reset_key, generate_random_chars(size=20))
   end
@@ -161,11 +157,6 @@ class User < ActiveRecord::Base
     email = Mailer.create_password_reset(self)
     Mailer.deliver email
   end
-
-#  def send_password
-#    email = Mailer.create_password( self )
-#    Mailer.deliver email
-#  end
   
   def personal_list
     lists.first

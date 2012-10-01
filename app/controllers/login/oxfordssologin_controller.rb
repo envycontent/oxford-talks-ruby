@@ -25,7 +25,7 @@ class Login::OxfordssologinController < ApplicationController
 	  session["return_to"] = nil
 	  flash[:confirm] = "You have been logged out."
     if was_local_user
-      redirect_to_url "https://webauth.ox.ac.uk/logout"
+      redirect_to "https://webauth.ox.ac.uk/logout"
     end
 	end
 

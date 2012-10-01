@@ -132,24 +132,60 @@ class Talk < ActiveRecord::Base
   end
   
   def organiser_email=(email)
-    self.organiser = email.blank? ? nil : User.find_or_create_by_email(email)
+    self.organiser = email.blank? ? nil : User.find_or_create_by_email_including_locals(email)
   end
   
-  # Tries to figure these out from the name of speaker field if no speaker given
-  def speaker_name
-    return "" unless self.name_of_speaker
-    self.name_of_speaker[/^\s*([^,(]*)/,1].strip
+  def ensure_speaker_initialized
+    if not speaker.nil? 
+      if not speaker.last_login and speaker.crsid.nil?
+        # Attempt to set sensible defaults for the speaker, but only
+        # if they haven't logged in before and are not locals
+        if speaker.name.blank?
+          speaker.name = self.name_of_speaker[/^\s*([^,(]*)/,1].strip
+        end
+        if speaker.affiliation.blank?
+          speaker.affiliation = self.name_of_speaker[/[,(]([^)]*)[)]?/,1] || ""
+        end
+        speaker.save
+      end
+    end
+
+    if self.name_of_speaker.blank?
+      if not speaker.nil? and speaker.name.blank?
+        # If we've identified the speaker by email address, and they're in the
+        # system with a name, use this for the talk
+        self.name_of_speaker = speaker.name
+      else
+        self.name_of_speaker = "Speaker to be confirmed"
+      end
+    end
+    return
   end
-  
-  def speaker_affiliation
-    return "" unless self.name_of_speaker
-    self.name_of_speaker[/[,(]([^)]*)[)]?/,1] || ""
+
+  def speaker_email=(email)
+    return if email.blank?
+    self.speaker = User.find_or_create_by_email_including_locals(email)
   end
-  
-  # Short cut to speaker email
+
   def speaker_email
     speaker ? speaker.email : ""
   end
+
+  # Tries to figure these out from the name of speaker field if no speaker given
+  #def speaker_name
+  #  return "" unless self.name_of_speaker
+  #  self.name_of_speaker[/^\s*([^,(]*)/,1].strip
+  #end
+  
+  #def speaker_affiliation
+  #  return "" unless self.name_of_speaker
+  #  self.name_of_speaker[/[,(]([^)]*)[)]?/,1] || ""
+  #end
+  
+  # Short cut to speaker email
+  #def speaker_email
+  #  speaker ? speaker.email : ""
+  #end
   
 # FIXME for some reason this broke in Ruby 1.8.7
 # AND FIXME anyway, is this really the best place to initialize / update Talk.speaker??
@@ -159,25 +195,27 @@ class Talk < ActiveRecord::Base
 # The first time speaker_email is called, it sets speaker.name and speaker.affiliation
 # to ""; then when before_save calls ensure_speaker_initialized, name_of_speaker
 # is now initialized and we can fill in speaker.name and speaker.affiliation
-  def speaker_email=(email)
-    return if email.blank?
-    self.speaker = User.find_or_create_by_email(email)
-    return if speaker.last_login # don't mess with real users' input
-    if !speaker.name || (speaker.name == "")
-      speaker.name = speaker_name
-    end
-    if !speaker.affiliation || (speaker.affiliation == "")
-      speaker.affiliation = speaker_affiliation
-    end
-    speaker.save
-  end
+  #def speaker_email=(email)
+  #  return if email.blank?
+  #  self.speaker = User.find_or_create_by_email_including_locals(email)
+  #
+  #  return if speaker.last_login # don't mess with real users' input
+  #  # This relies on the correct ordering of the setting of speaker_email and speaker_name
+  #  if !speaker.name || (speaker.name == "")
+  #    speaker.name = speaker_name
+  #  end
+  #  if !speaker.affiliation || (speaker.affiliation == "")
+  #    speaker.affiliation = speaker_affiliation
+  #  end
+  #  speaker.save
+  #end
 
-  def ensure_speaker_initialized
-    # Can't say speaker_email=speaker_email as this gets optimised out
-    # Have to do this instead to force it to call speaker_email again
-    self.send("speaker_email=", speaker_email)
-    return
-  end
+  #def ensure_speaker_initialized
+  #  # Can't say speaker_email=speaker_email as this gets optimised out
+  #  # Have to do this instead to force it to call speaker_email again
+  #  self.send("speaker_email=", speaker_email)
+  #  return
+  #end
   
   # For security
   def editable?

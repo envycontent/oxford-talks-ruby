@@ -66,7 +66,7 @@ module InstallationHelper
       request.env['WEBAUTH_USER']
     end
 
-    def local_user_from_id(id)
+    def open_ldap_connection
       # Note that for this to work, we need a valid kerberos ticket
       # at this point. One way is to go:
       #    kinit -k -t /etc/keytab services/hostname`
@@ -75,20 +75,32 @@ module InstallationHelper
       # and a set KRB5CCNAME in the apache config
       # This is what we are doing
       conn = LDAP::SSLConn.new(host='ldap.oak.ox.ac.uk', port=636)
-      #conn.sasl_quiet=true
+      # Noisy sasl generates lots of logging output
+      conn.sasl_quiet=false
       conn.sasl_bind('','')
+      return conn
+    end
 
-      singleEntry = nil
+    @@ldap_base = 'ou=people,dc=oak,dc=ox,dc=ac,dc=uk'
 
-      conn.search('ou=people,dc=oak,dc=ox,dc=ac,dc=uk', LDAP::LDAP_SCOPE_ONELEVEL, 
+    def local_id_from_email(email)
+      open_ldap_connection.search(@@ldap_base, LDAP::LDAP_SCOPE_ONELEVEL, "(oakAlternativeMail=#{email})") { |entry|
+        return entry.get_values("oakOxfordSSOUsername")[0]
+      }
+      # Couldn't find that user
+      return nil
+    end
+
+    def local_user_from_id(id)
+      open_ldap_connection.search(@@ldap_base, LDAP::LDAP_SCOPE_ONELEVEL, 
         "(oakPrincipal=krbPrincipalName=#{id}@OX.AC.UK,cn=OX.AC.UK,cn=KerberosRealms,dc=oak,dc=ox,dc=ac,dc=uk)", nil) { |entry|
         email = entry.get_values("mail")[0]
         name = entry.get_values("displayName")[0]
-        sep = ", "
-        ouValues = entry.get_values("ou")
-        combinedOUValue = ouValues != nil ? ouValues.join(sep) : "";
-        combinedOrganization = entry.get_values("o")[0] + sep + combinedOUValue
-        return User.create! :crsid => id, :email => email, :affiliation => combinedOrganization, :name => name
+        affiliation_separator = ", "
+        ou_values = entry.get_values("ou")
+        combined_ou_value = ou_values != nil ? ou_values.join(affiliation_separator) : ""
+        combined_organization = entry.get_values("o")[0] + affiliation_separator + combined_ou_value
+        return User.create! :crsid => id, :email => email, :affiliation => combined_organization, :name => name
       }
     end
 
@@ -114,6 +126,11 @@ module InstallationHelper
 
     def local_user_from_id(id)
       return User.create! :crsid => id, :email => local_email_address_from_id(id), :affiliation => collegeOrUniversityName
+    end
+
+    def local_id_from_email(email)
+      return unless email =~ /^([a-z0-9]+)@cam.ac.uk$/i
+      return $1
     end
 
     def is_local_user?(user)
@@ -144,8 +161,8 @@ module InstallationHelper
     end
   end
   
-  #@@CURRENT_INSTALLATION = OxfordInstallation.new
-  @@CURRENT_INSTALLATION = CambridgeInstallation.new
+  @@CURRENT_INSTALLATION = OxfordInstallation.new
+  #@@CURRENT_INSTALLATION = CambridgeInstallation.new
 
   def self.CURRENT_INSTALLATION
     return @@CURRENT_INSTALLATION

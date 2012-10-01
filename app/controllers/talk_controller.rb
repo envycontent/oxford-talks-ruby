@@ -77,7 +77,7 @@ class TalkController < ApplicationController
           flash[:warning] = "Sorry, your talk was not saved, please try again."
           format.html { redirect_to list_details_url(:action => 'choose') }
         end
-	return true
+      	return true
       end
       @talk = Talk.new unless find_talk
       @talk.attributes = params[:talk]

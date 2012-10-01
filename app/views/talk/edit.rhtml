@@ -15,7 +15,7 @@
 	<%= f.text_field :speaker_email, :size => '60', :class => 'wide'  %>
 	<p class='emailcheck'><%= f.check_box :send_speaker_email %>Check this box to send an e-mail to the speaker when you save this talk.</p>
 
-	<h3>Speaker's name and affiliation</h3>
+	<h3>Speaker's name</h3>
 	<%= f.text_field :name_of_speaker, :size => '60', :class => 'wide'  %>
 	
 	<h3>Picture of speaker or other image associated with this talk (optional)</h3>
@@ -67,7 +67,7 @@ var talk_edit_rules = {
 		}
 	},
 	'#edittalk input#talk_title' : function(el){ default_value(el,'Title to be confirmed'); },
-	'#edittalk input#talk_name_of_speaker' : function(el){ default_value(el,'Speaker to be confirmed'); },
+	'#edittalk input#talk_name_of_speaker' : function(el){ default_value(el,''); },
 	'#edittalk textarea#talk_abstract' : function(el){ default_value(el,'Abstract not available'); },	
 	'#edittalk input#talk_venue_name' : function(el){ default_value(el,'Venue to be confirmed'); }
 }

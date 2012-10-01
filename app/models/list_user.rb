@@ -3,7 +3,7 @@ class ListUser < ActiveRecord::Base
   belongs_to :list
   
   def user_email=( email_address )
-    self.user = User.find_or_create_by_email(email_address)
+    self.user = User.find_or_create_by_email_including_locals(email_address)
   end
   
   def user_email
