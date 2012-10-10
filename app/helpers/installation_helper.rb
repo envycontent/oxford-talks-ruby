@@ -74,6 +74,9 @@ module InstallationHelper
       # http://www.eyrie.org/~eagle/software/kstart/k5start.html)
       # and a set KRB5CCNAME in the apache config
       # This is what we are doing
+      Rails.logger.debug "LDAPing again"
+      ENV['KRB5CCNAME'] = '/var/cache/k5start/talks-ox-ac-uk.ccache'
+      Rails.logger.debug ENV['KRB5CCNAME']
       conn = LDAP::SSLConn.new(host='ldap.oak.ox.ac.uk', port=636)
       # Noisy sasl generates lots of logging output
       conn.sasl_quiet=false

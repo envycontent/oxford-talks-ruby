@@ -54,6 +54,17 @@ class List < ActiveRecord::Base
     new_list
   end
   
+  def List.find_by_id_and_check_management(id)
+    logger.debug "Looking for list with id"
+    logger.debug id
+    list = List.find_by_id(id)
+    if list.managers.include?(User.current)
+      return list
+    else
+      return nil
+    end
+  end
+
   # The managers
   has_many :list_users
   has_many :users, :through => :list_users

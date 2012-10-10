@@ -1,14 +1,29 @@
 class ListController < ApplicationController
   
   before_filter :ensure_user_is_logged_in, :except =>  %w{ index }
-  before_filter :find_list, :except => %w{ new create choose }
-  before_filter :check_can_edit_list, :except => %w{ index new create choose }
+  before_filter :find_list, :except => %w{ new create choose api_create }
+  before_filter :check_can_edit_list, :except => %w{ index new create choose api_create }
   
   def new
     @list = List.new
     @list.ex_directory = true
   end
   
+  def api_create
+    @list = List.new params[:list]
+    logger.debug params[:list]
+    logger.debug @list.name
+    logger.debug @list.list_type
+    logger.debug "Hey"
+    if @list.save
+      @list.users << User.current
+		  headers["Content-Type"] = "text/xml; charset=utf-8"
+  		render :layout => false, :action => 'xml'
+    else
+      render :status => 500
+    end
+  end
+
   def create
     @list = List.new params[:list]
     if @list.save
@@ -18,7 +33,7 @@ class ListController < ApplicationController
         redirect_to params[:return_to]
       else
         redirect_to list_path(:id => @list.id)
-      end
+      end    
     else
       render :action => 'new'
     end

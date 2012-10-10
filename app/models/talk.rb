@@ -100,22 +100,32 @@ class Talk < ActiveRecord::Base
   def name; title end
   def details; abstract end
   
+  def series_id_string=(id)
+    self.series = id.blank? ? nil : List.find_by_id_and_check_management(id.to_i)
+  end
+
+  def list_id_strings=(ids)
+    logger.debug "list id strings"
+    logger.debug ids
+    ids.each { |id| List.find_by_id_and_check_management(Integer(id)).add(self) }
+  end
+
   # Short cut to the series name
-  def series_name
-    series ? series.name : ""
-  end
+  #def series_name
+  #  series ? series.name : ""
+  #end
   
-  def series_name=(new_series_name)
-    self.series = new_series_name.blank? ? nil : List.find_or_create_by_name_while_checking_management(new_series_name)
-  end
+  #def series_name=(new_series_name)
+  #  self.series = new_series_name.blank? ? nil : List.find_or_create_by_name_while_checking_management(new_series_name)
+  #end
   
-  def list_names
-    lists.collect { |list| list.name }
-  end
+  #def list_names
+  #  lists.collect { |list| list.name }
+  #end
   
-  def list_names=(new_list_names)
-    new_list_names.each { |listName| List.find_or_create_by_name_while_checking_management(listName).add(self) }
-  end
+  #def list_names=(new_list_names)
+  #  new_list_names.each { |listName| List.find_or_create_by_name_while_checking_management(listName).add(self) }
+  #end
   
   # Short cut to the venue name
   def venue_name

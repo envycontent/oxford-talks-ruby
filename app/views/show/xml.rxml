@@ -33,7 +33,7 @@ xml.list do
           xml.list do
             xml.id list.id
             xml.name list.name
-            xml.type list.type
+            xml.list_type list.list_type
           end
         end
       end

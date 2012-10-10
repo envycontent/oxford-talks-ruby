@@ -29,6 +29,7 @@ class TalkController < ApplicationController
     end
     
     def create
+      logger.debug params[:talks]
       @talk = Talk.new(params[:talk])
       return false unless user_can_edit_talk?
       if @talk.save
