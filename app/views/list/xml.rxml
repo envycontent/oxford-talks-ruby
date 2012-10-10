@@ -1,0 +1,10 @@
+xml.instruct!
+
+xml.list do 
+  if @list
+    xml.id @list.id
+    xml.name @list.name
+    xml.details @list.details
+    xml.list_type @list.list_type
+  end
+end
