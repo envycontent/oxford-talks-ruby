@@ -59,13 +59,17 @@ class User < ActiveRecord::Base
   # Life cycle actions
   before_save :update_crsid_from_email
   before_save :update_name_in_sort_order
-  before_create :create_password_reset_key
+  before_create :create_password_reset_key_if_not_local
   after_create :create_personal_list
-  after_create :send_password_reset_request
+  after_create :send_password_reset_request_if_not_local
 
   # For encrypting the password in the db
   before_save :hash_password
   
+  def is_local_user?
+    return InstallationHelper.CURRENT_INSTALLATION.is_local_user?(self)
+  end
+
   def hash_password
     if not self.password.nil?
       write_attribute(:hashed_password, BCrypt::Password.create(self.password))
@@ -73,6 +77,9 @@ class User < ActiveRecord::Base
   end
 
   def authenticate(password)
+    if self.is_local_user?:
+      raise "Attempt to authenticate local user using password"
+    end
     if not self.hashed_password.nil? and BCrypt::Password.new(self.hashed_password).is_password? password
       return true
     else
@@ -149,10 +156,22 @@ class User < ActiveRecord::Base
   # Do we send this user emails, in general (?)
   attr_accessor :send_email
 
+  def create_password_reset_key_if_not_local
+    if not self.is_local_user?
+      self.create_password_reset_key
+    end
+  end
+
   def create_password_reset_key
     write_attribute(:password_reset_key, generate_random_chars(size=20))
   end
   
+  def send_password_reset_request_if_not_local
+    if not self.is_local_user?
+      self.send_password_reset_request
+    end
+  end
+
   def send_password_reset_request
     email = Mailer.create_password_reset(self)
     Mailer.deliver email
