@@ -42,9 +42,9 @@ module InstallationHelper
 
   class OxfordInstallation < Installation
     def initialize()
-      super('oxford', 'talks@linacre.ox.ac.uk', 'talks@linacre.ox.ac.uk', 'noreply@linacre.ox.ac.uk', 'OxfordTalksLogo.png', 
-      	'OxfordTalksLogo.png', 'favicon-ox.ico', 'redarrow.gif',
-        'Oxford Talks', 'talks.linacre.ox.ac.uk', 'University of Oxford', 'Oxford', 'identifier2-ox.gif', 'http://www.ox.ac.uk',
+      super('oxford', 'oxtalks-bugs@it.ox.ac.uk', 'oxtalks-contact@it.ox.ac.uk', 'noreply@talks.ox.ac.uk', 'OxfordTalksLogo.png', 
+      	'OxfordTalksLogo.png', 'favicon-ox-uni.ico', 'redarrow.gif',
+        'Oxford Talks', 'talks.ox.ac.uk', 'University of Oxford', 'Oxford', 'identifier2-ox.gif', 'http://www.ox.ac.uk',
         'first.lastname@college_or_department.ox.ac.uk', 'Oxford users (SSO)', 'SSO (Single Sign On)', 'go_to_secure_webauth',
         Login::OxfordssologinController, 'talks-screen-ox',
         'Oxford Talks is based on talks.cam which is &copy; University of Cambridge.', 'e.g. africa, ageing, maths')
