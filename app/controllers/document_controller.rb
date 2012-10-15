@@ -26,6 +26,11 @@ class DocumentController < ApplicationController
   end
 
   def check_can_edit
+    if InstallationHelper.CURRENT_INSTALLATION.only_admin_edit_documents and User.current.administrator == 0
+      flash[:error] = "Only an admininstrator may edit documents."
+      redirect_to :action => 'show', :name => @document.nil? ? "Documentation" : @document.name 
+      return false
+    end
     return true unless @document
     return true if @document.can_edit?
     flash[:error] = "Only an admininstrator may edit this document."

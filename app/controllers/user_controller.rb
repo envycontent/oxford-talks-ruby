@@ -1,7 +1,7 @@
 class UserController < ApplicationController
-  before_filter :ensure_user_is_logged_in, :except => %w( new show create password_reset_sent reset_password update_password )
-  before_filter :find_user, :except => %w( new create password_reset_sent )
-  before_filter :check_can_edit_user, :except => %w( new show create index password_reset_sent reset_password update_password )
+  before_filter :ensure_user_is_logged_in, :except => %w( new show create initial_password_reset_sent reset_password update_password )
+  before_filter :find_user, :except => %w( new create initial_password_reset_sent )
+  before_filter :check_can_edit_user, :except => %w( new show create index initial_password_reset_sent reset_password update_password )
   
   # Filters
   
@@ -31,7 +31,7 @@ class UserController < ApplicationController
     
     if @user.save
       flash[:confirm] = 'A new account has been created.'
-      redirect_to :action => 'password_reset_sent'
+      redirect_to :action => 'initial_password_reset_sent'
     else
       render :action => 'new'
     end
@@ -63,7 +63,7 @@ class UserController < ApplicationController
         flash[:confirm] = 'The two versions of your new password did not match'
         render :action => 'change_password'
       else
-        @user.password = params[:new_password]
+        @user.unhashed_password = params[:new_password]
         @user.password_reset_key = nil
         @user.save
         flash[:confirm] = 'Your password was updated'

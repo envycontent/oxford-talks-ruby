@@ -6,11 +6,11 @@ module InstallationHelper
     attr_reader :installationName, :bugsEmail, :webmasterEmail, :noReplyEmail, :talksSmallLogoURL, :talksBigLogoURL, :favIconURL, :arrowURL,
       :talksSiteName, :talksSiteHost, :collegeOrUniversityName, :townName, :collegeOrUniversityLogoURL, :collegeOrUniversityURL,
       :collegeOrUniversityExampleEmail, :localLoginLinkText, :loginSystemName, :localLoginAction,
-      :loginController, :styleSheet, :footerMessage, :searchExample
+      :loginController, :styleSheet, :footerMessage, :searchExample, :only_admin_edit_documents
   
     def initialize(installationName, bugsEmail, webmasterEmail, noReplyEmail, talksSmallLogoURL, talksBigLogoURL, favIconURL, arrowURL, talksSiteName,
       talksSiteHost, collegeOrUniversityName, townName, collegeOrUniversityLogoURL, collegeOrUniversityURL,
-      collegeOrUniversityExampleEmail, localLoginLinkText, loginSystemName, localLoginAction, loginController, styleSheet, footerMessage, searchExample)
+      collegeOrUniversityExampleEmail, localLoginLinkText, loginSystemName, localLoginAction, loginController, styleSheet, footerMessage, searchExample, only_admin_edit_documents)
       @installationName = installationName
       @bugsEmail = bugsEmail
       @webmasterEmail = webmasterEmail
@@ -33,6 +33,7 @@ module InstallationHelper
       @styleSheet = styleSheet
       @footerMessage = footerMessage
       @searchExample = searchExample
+      @only_admin_edit_documents = only_admin_edit_documents
     end
 
     def to_str()
@@ -47,7 +48,7 @@ module InstallationHelper
         'Oxford Talks', 'talks.ox.ac.uk', 'University of Oxford', 'Oxford', 'identifier2-ox.gif', 'http://www.ox.ac.uk',
         'first.lastname@college_or_department.ox.ac.uk', 'Oxford users (SSO)', 'SSO (Single Sign On)', 'go_to_secure_webauth',
         Login::OxfordssologinController, 'talks-screen-ox',
-        'Oxford Talks is based on talks.cam which is &copy; University of Cambridge.', 'e.g. africa, ageing, maths')
+        'Oxford Talks is based on talks.cam which is &copy; University of Cambridge.', 'e.g. africa, ageing, maths', true)
     end
 
     def user_from_http_header(request)
@@ -118,7 +119,7 @@ module InstallationHelper
         'favicon-cam.ico', 'redarrow.gif', 'talks.cam', 'talks.cam.ac.uk', 'University of Cambridge', 'Cambridge', 'identifier2.gif',
         'http://www.cam.ac.uk', 'crsid@cam.ac.uk', 'Cambridge users (raven)', 'raven', 'go_to_raven',
         Login::RavenloginController, 'talks-screen-cam', '&copy; 2006-2009 talks.cam, University of Cambridge',
-        'e.g. Surfaces and strings, Darwin lectures, Thomas Young, meerkat, Lord Adonis')
+        'e.g. Surfaces and strings, Darwin lectures, Thomas Young, meerkat, Lord Adonis', false)
     end
 
     def user_from_http_header(request)

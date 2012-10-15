@@ -71,8 +71,8 @@ class User < ActiveRecord::Base
   end
 
   def hash_password
-    if not self.password.nil?
-      write_attribute(:hashed_password, BCrypt::Password.create(self.password))
+    if not self.unhashed_password.nil?
+      write_attribute(:hashed_password, BCrypt::Password.create(self.unhashed_password))
     end
   end
 
@@ -133,7 +133,7 @@ class User < ActiveRecord::Base
     new_status
   end
   
-  attr_accessor :password
+  attr_accessor :unhashed_password
   
   def generate_random_chars(size = 10)
     chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
