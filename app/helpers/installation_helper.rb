@@ -68,44 +68,60 @@ module InstallationHelper
     end
 
     def open_ldap_connection
-      # Note that for this to work, we need a valid kerberos ticket
-      # at this point. One way is to go:
-      #    kinit -k -t /etc/keytab services/hostname`
-      # annother is to use k5start (see
-      # http://www.eyrie.org/~eagle/software/kstart/k5start.html)
-      # and a set KRB5CCNAME in the apache config
-      # This is what we are doing
-      Rails.logger.debug "LDAPing again"
-      ENV['KRB5CCNAME'] = '/var/cache/k5start/talks-ox-ac-uk.ccache'
-      Rails.logger.debug ENV['KRB5CCNAME']
-      conn = LDAP::SSLConn.new(host='ldap.oak.ox.ac.uk', port=636)
-      # Noisy sasl generates lots of logging output
-      conn.sasl_quiet=false
-      conn.sasl_bind('','')
-      return conn
+      begin
+        # Note that for this to work, we need a valid kerberos ticket
+        # at this point. One way is to go:
+        #    kinit -k -t /etc/keytab services/hostname`
+        # annother is to use k5start (see
+        # http://www.eyrie.org/~eagle/software/kstart/k5start.html)
+        # and a set KRB5CCNAME in the apache config
+        # This is what we are doing
+        Rails.logger.debug "LDAPing again"
+        ENV['KRB5CCNAME'] = '/var/cache/k5start/talks-ox-ac-uk.ccache'
+        Rails.logger.debug ENV['KRB5CCNAME']
+        conn = LDAP::SSLConn.new(host='ldap.oak.ox.ac.uk', port=636)
+        # Noisy sasl generates lots of logging output
+        conn.sasl_quiet=false
+        conn.sasl_bind('','')
+        return conn
+      rescue
+        if Rails.env == "production" then
+          raise
+        else
+          Rails.logger.error "Failed to create ldap connection"
+          return nil
+        end
+      end
     end
 
     @@ldap_base = 'ou=people,dc=oak,dc=ox,dc=ac,dc=uk'
 
     def local_id_from_email(email)
-      open_ldap_connection.search(@@ldap_base, LDAP::LDAP_SCOPE_ONELEVEL, "(oakAlternativeMail=#{email})") { |entry|
-        return entry.get_values("oakOxfordSSOUsername")[0]
-      }
+      connection = open_ldap_connection
+      if connection != nil then
+        connection.search(@@ldap_base, LDAP::LDAP_SCOPE_ONELEVEL, "(oakAlternativeMail=#{email})") { |entry|
+          return entry.get_values("oakOxfordSSOUsername")[0]
+        }
+      end
       # Couldn't find that user
       return nil
     end
 
     def local_user_from_id(id)
-      open_ldap_connection.search(@@ldap_base, LDAP::LDAP_SCOPE_ONELEVEL, 
-        "(oakPrincipal=krbPrincipalName=#{id}@OX.AC.UK,cn=OX.AC.UK,cn=KerberosRealms,dc=oak,dc=ox,dc=ac,dc=uk)", nil) { |entry|
-        email = entry.get_values("mail")[0]
-        name = entry.get_values("displayName")[0]
-        affiliation_separator = ", "
-        ou_values = entry.get_values("ou")
-        combined_ou_value = ou_values != nil ? ou_values.join(affiliation_separator) : ""
-        combined_organization = entry.get_values("o")[0] + affiliation_separator + combined_ou_value
-        return User.create! :crsid => id, :email => email, :affiliation => combined_organization, :name => name
-      }
+      connection = open_ldap_connection
+      if connection != nil then
+        connection.search(@@ldap_base, LDAP::LDAP_SCOPE_ONELEVEL, 
+          "(oakPrincipal=krbPrincipalName=#{id}@OX.AC.UK,cn=OX.AC.UK,cn=KerberosRealms,dc=oak,dc=ox,dc=ac,dc=uk)", nil) { |entry|
+          email = entry.get_values("mail")[0]
+          name = entry.get_values("displayName")[0]
+          affiliation_separator = ", "
+          ou_values = entry.get_values("ou")
+          combined_ou_value = ou_values != nil ? ou_values.join(affiliation_separator) : ""
+          combined_organization = entry.get_values("o")[0] + affiliation_separator + combined_ou_value
+          return User.create! :crsid => id, :email => email, :affiliation => combined_organization, :name => name
+        }
+      end
+      return nil
     end
 
     def is_local_user?(user)

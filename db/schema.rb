@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 30) do
+ActiveRecord::Schema.define(:version => 31) do
 
   create_table "custom_views", :force => true do |t|
     t.string  "name"
@@ -92,6 +92,7 @@ ActiveRecord::Schema.define(:version => 30) do
     t.integer  "image_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "list_type",        :limit => 60
   end
 
   add_index "lists", ["ex_directory"], :name => "index_lists_on_ex_directory"
@@ -166,6 +167,7 @@ ActiveRecord::Schema.define(:version => 30) do
   create_table "users", :force => true do |t|
     t.string   "email"
     t.string   "name"
+    t.string   "password",           :limit => 50
     t.string   "affiliation",        :limit => 200
     t.integer  "administrator",                     :default => 0,    :null => false
     t.integer  "old_id"

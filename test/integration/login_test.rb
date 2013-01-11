@@ -75,7 +75,7 @@ class LoginTest < ActionController::IntegrationTest
         post user_url(:action => 'create'), details
         user = assigns(:user)
         assert_response :redirect
-        assert_redirected_to user_url(:action => "password_reset_sent")
+        assert_redirected_to user_url(:action => "initial_password_reset_sent")
       end
      
       def email_for( address )
