@@ -1,9 +1,9 @@
 <table id="header" summary="page header">
 <tr>
 <% inst = InstallationHelper.CURRENT_INSTALLATION %>
-<td class="identifier"><%= link_to image_tag(inst.collegeOrUniversityLogoURL, :alt => "[" + inst.collegeOrUniversityName + "]"), inst.collegeOrUniversityURL %></td>
-<td class='flash'><%= show_flash %></td>
 <td class="deptitle"><%= link_to image_tag(inst.talksSmallLogoURL, :alt => '[' + inst.talksSiteName + ']'), home_url %></td>
+<td class='flash'><%= show_flash %></td>
+<td class="identifier"><%= link_to image_tag(inst.collegeOrUniversityLogoURL, :alt => "[" + inst.collegeOrUniversityName + "]"), inst.collegeOrUniversityURL %></td>
 </tr>
 </table>
 <div id="topbgline" class='line'>&nbsp;</div>

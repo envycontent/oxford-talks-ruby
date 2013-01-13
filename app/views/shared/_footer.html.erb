@@ -1,10 +1,13 @@
 <!-- footer -->
 <div id="bottombgline" class='line'>&nbsp;</div>
-<p class="cfooter"><%= InstallationHelper.CURRENT_INSTALLATION.footerMessage %> <%=
+<p class="cfooter"><%=
 link_to 'Contact Us', document_url(:name => 'Contact') %>
  | <%= link_to 'Help and Documentation', document_url(:name => 'Documentation') %>
  | <%= document 'Privacy and Publicity' %>
+ | <%= link_to 'Cookies', document_url(:name => 'Cookies') %>
+ | <%= link_to 'Accessibility', document_url(:name => 'Accessibility') %>
 <br />
+<%= InstallationHelper.CURRENT_INSTALLATION.footerMessage %>
 <!--If you wish to give level of conformance after testing, edit this and uncomment it-->
 <!--
 <br />

@@ -169,13 +169,15 @@ html, body {
 	
 	#header td.identifier {
 		width: 198px;
-		text-align: left;
-		padding: 0;
+		text-align: right;
+		padding: 15px 0px 15px 0px;
 	}
 	
 	#header td.deptitle {
 		width: 68px;
-		text-align: right;
+		text-align: left;
+		padding: 15px 0px 15px 0px;
+		
 		}
 	
 	#header td.flash {
@@ -268,10 +270,12 @@ td.left {
 		}
 
 /** The default application layout **/
-body.application table#container {
+body.application table#container,
+body.front table#container {
 	width: 100%;
 }
-	body.application table#container td.left {
+	body.application table#container td.left,
+	body.front table#container td.left {
 		width: 13em;
 		border-right: 1px solid #eee;
 	}
@@ -285,82 +289,7 @@ body.application table#container {
 			margin: 0;
 		}
 
-/** Front page and search page**/
-.front table {
-	margin: 12px 0 0 0; 
-	padding:0; 
-	border: none;
-	border-collapse:	collapse;
-	}
-	
-	.index table {
-		width:750px; 
-		margin:auto; /** Keeps it centred**/		
-	}
-		
-	.front td.left, .front td.cure {
-		border-right: 2px solid #666;
-	}
-	
-		.front td.cure {
-			padding-top: 0px;
-			vertical-align: bottom;
-			text-align: right;
-		}
-	
-	/** The main content area **/
-	.front td.main {
-		padding: 0 0 0 1em;
-	}
-	
-		/** The featured talks **/
-		.front td.main h2 {
-			font-size: 0.8em;
-			font-weight: normal;
-			margin: 2em 0 0 0;
-			border-bottom: none;
-		}
-			
-			/** Individual talks **/
-			.front td.main div.talk {
-				padding: 0.2em 0 0.2em 0;
-			}
-			
-				.front td.main div.talk h3 {
-					font-size: 1em;
-					font-weight: normal;
-					margin: 0 0 0 40px;
-				}
-			
-				.front td.main div.talk p {
-					margin: 0 0 0 40px;
-				}
-		
-				.front td.main div.talk img {
-					float: left;
-					max-width: 32px;
-				}
-			
-		/** Search results **/
-		.front td.main span.count {
-			color: black;
-			font-size: 0.8em;
-		}
-		.front td.main div.result {
-			padding: 0.5em 0 0.5em 0;
-		}
-			
-			.front td.main div.result h2 {
-				font-size: 1em;
-				font-weight: bold;
-				margin: 0 0 0 0px;
-				border-bottom: none;
-			}
-		
-			.front td.main div.result p {
-				font-size: 0.8em;
-				margin: 0 0 0 0px;
-			}
+
 
 /** Standard list view **/
 .list table {

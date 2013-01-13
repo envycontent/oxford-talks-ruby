@@ -28,6 +28,17 @@ class IndexController < ApplicationController
     @talks = Talk.find_public :all, :conditions => ['start_time BETWEEN ? AND ?',@time,@time+1.day], :order => 'start_time ASC'
   end
   
+  def today
+    begin
+      @time = Time.now.at_beginning_of_day
+    rescue ArgumentError => e
+      render_404
+      return
+    end
+    @year, @month, @day = @time.year, @time.month, @time.day
+    @talks = Talk.find_public :all, :conditions => ['start_time BETWEEN ? AND ?',@time,@time+1.day], :order => 'start_time ASC'
+  end
+  
   private
   
   def index_for( klass )

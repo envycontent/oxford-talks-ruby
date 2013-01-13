@@ -12,7 +12,7 @@ ActionController::Routing::Routes.draw do |map|
 
   # You can have the root of your site routed by hooking up '' 
   # -- just remember to delete public/index.html.
-  map.home '', :controller => "search"
+  map.home '', :controller => 'index', :action => 'today', :year => Time.now.year.to_s, :month => Time.now.month.to_s, :day => Time.now.day.to_s, :requirements => {:year => /\d{4}/, :day => /\d{1,2}/,:month => /\d{1,2}/}
 
   map.search 'search/:search', :controller => 'search', :action => 'results', :search => nil
 

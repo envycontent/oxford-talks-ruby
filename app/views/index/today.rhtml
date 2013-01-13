@@ -1,0 +1,11 @@
+<h1 class="index"><%= link_to "All of Today's Talks", date_index_url %>&nbsp;&nbsp;|&nbsp;&nbsp;<%= link_to "Browse by Date", date_index_url %>&nbsp;&nbsp;|&nbsp;&nbsp;<%= link_to "Recently Added", index_url(:action => 'talks', :letter => 'new') %></h1>
+
+<ul>
+<% @talks.each do |talk| %>
+	<li><%= talk.start_time.strftime('%H:%M') %> - <%= link_talk talk %></li>
+<% end %>
+</ul>
+
+<% if @talks.empty? %>
+	<p>No talks on <%= params[:year ]%>/<%= params[:month ]%>/<%= params[:day ]%></p>
+<% end %>
