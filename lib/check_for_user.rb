@@ -13,6 +13,11 @@ module CheckForUser
     return true if User.current
     redirect_to_login
   end
+
+  def ensure_user_is_local_or_administrator
+    return true if ensure_user_is_logged_in and (User.current.is_local_user? or User.current.administrator?)
+    redirect_to_login
+  end
   
   def redirect_to_login
     session["return_to"] = request.request_uri

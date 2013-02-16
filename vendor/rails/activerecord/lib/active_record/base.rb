@@ -2340,6 +2340,8 @@ module ActiveRecord #:nodoc:
         def sanitize_sql_hash_for_conditions(attrs, default_table_name = quoted_table_name, top_level = true)
           attrs = expand_hash_conditions_for_aggregates(attrs)
 
+          return '1 = 2' if !top_level && attrs.is_a?(Hash) && attrs.empty?
+
           conditions = attrs.map do |attr, value|
             table_name = default_table_name
 
@@ -2996,11 +2998,11 @@ module ActiveRecord #:nodoc:
       def remove_attributes_protected_from_mass_assignment(attributes)
         safe_attributes =
           if self.class.accessible_attributes.nil? && self.class.protected_attributes.nil?
-            attributes.reject { |key, value| attributes_protected_by_default.include?(key.gsub(/\(.+/, "")) }
+            attributes.reject { |key, value| attributes_protected_by_default.include?(key.gsub(/\(.+/m, "")) }
           elsif self.class.protected_attributes.nil?
-            attributes.reject { |key, value| !self.class.accessible_attributes.include?(key.gsub(/\(.+/, "")) || attributes_protected_by_default.include?(key.gsub(/\(.+/, "")) }
+            attributes.reject { |key, value| !self.class.accessible_attributes.include?(key.gsub(/\(.+/m, "")) || attributes_protected_by_default.include?(key.gsub(/\(.+/m, "")) }
           elsif self.class.accessible_attributes.nil?
-            attributes.reject { |key, value| self.class.protected_attributes.include?(key.gsub(/\(.+/,"")) || attributes_protected_by_default.include?(key.gsub(/\(.+/, "")) }
+            attributes.reject { |key, value| self.class.protected_attributes.include?(key.gsub(/\(.+/m,"")) || attributes_protected_by_default.include?(key.gsub(/\(.+/m, "")) }
           else
             raise "Declare either attr_protected or attr_accessible for #{self.class}, but not both."
           end

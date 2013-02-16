@@ -1,9 +1,9 @@
 class TalkController < ApplicationController
     
-    before_filter :ensure_user_is_logged_in, :except => %w( show index vcal )
+    before_filter :ensure_user_is_local_or_administrator, :except => %w( show index vcal )
     
     def login_message
-      "You need to be logged in to create or edit a talk."
+      "You need to be logged in with " + InstallationHelper.CURRENT_INSTALLATION.loginSystemName + " to create or edit a talk."
     end
     
     # Methods for viewing talks

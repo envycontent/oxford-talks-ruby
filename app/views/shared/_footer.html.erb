@@ -14,4 +14,22 @@ link_to 'Contact Us', document_url(:name => 'Contact') %>
 <a href="http://www.w3.org/WAI/WCAG1AAA-Conformance">WAI AAA conformant</a>
 --></p>
 <!--  end footer -->
-<!-- Google Analytics code appended here upon deployment -->
+<!-- Google Analytics code (used to be) appended here upon deployment, now statically included -->
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-37957799-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type =
+'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' :
+'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
