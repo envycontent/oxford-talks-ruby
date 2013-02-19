@@ -10,8 +10,6 @@
 	
 	<h2>For talk organisers</h2>
 	<%= link_to 'Create a new list', list_details_path(:action => 'new') %>
-  <%= User.current.is_local_user? %>
-  <%= User.current.administrator? %>
 	<%= if User.current.is_local_user? or User.current.administrator?
         link_to 'Add a new talk', list_details_path(:action => 'choose')
       end %>
