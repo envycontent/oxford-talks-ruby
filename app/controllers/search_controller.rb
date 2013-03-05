@@ -22,6 +22,9 @@ class SearchController < ApplicationController
       @lists = List.find :all, :conditions => ["name LIKE :search OR details LIKE :search",{:search => "%#{@search.strip}%"}]
       @users = User.search(@search)
     end
+
+    @lists.delete_if { |list| list.upcoming_talks_count == 0 }
+
     @lists.delete_if { |list| list.ex_directory? }
     @talks.delete_if { |talk| talk.ex_directory? }
     @venues, @lists = @lists.partition { |list| list.is_a? Venue }
@@ -32,7 +35,6 @@ class SearchController < ApplicationController
   
   def three_random_items_from( array )
     return array if array.size <= 3
-    random_indices = [1,1,1]
     random_indices = [ rand(array.size), rand(array.size), rand(array.size)] until random_indices.uniq! == nil # ie uniq doesn't eliminate anything a unique set
     [ array[random_indices[0]], array[random_indices[1]], array[random_indices[2]] ]
   end

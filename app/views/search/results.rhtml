@@ -1,13 +1,6 @@
 <h1>Search for a talk</h1>
 <%= render :partial => 'search' %>
 
-<h1>Lists</h1>
-<% if @lists.empty? %>
-<p>No lists found.</p>
-<% end %>
-
-<%= render :partial => 'list_result', :collection => @lists %>
-
 <h1>Upcoming Talks</h1>
 
 <% if @future_talks.empty? %>
@@ -15,6 +8,13 @@
 <% end %>
 
 <%= render :partial => 'result', :collection => @future_talks %>
+
+<h1>Lists</h1>
+<% if @lists.empty? %>
+<p>No lists found.</p>
+<% end %>
+
+<%= render :partial => 'list_result', :collection => @lists %>
 
 <% unless @future %>
 <h1>Past Talks</h1>

@@ -27,7 +27,6 @@ class List < ActiveRecord::Base
     return nil if user == nil
     return nil if user.affiliation.nil?
     return nil if user.affiliation.empty?
-#    return nil
     lists = List.find(:all, :conditions => ['? LIKE CONCAT(\'%\', name, \'%\')', user.affiliation])
     return lists
   end
@@ -40,6 +39,11 @@ class List < ActiveRecord::Base
   include CleanUtf # To try and prevent any malformed utf getting in
   def exclude_from_xss_checks; %w{ details details_filtered } end # They go through textile filter anyway
   
+  def upcoming_talks_count
+    time_at_beginning_of_day = Time.new.beginning_of_day
+    return Talk.count(:distinct => true, :select => 'talk_id', :joins => "INNER JOIN list_talks ON talks.id = list_talks.talk_id", :conditions => ['(list_talks.list_id = ?) AND (start_time >= ?)', self.id, time_at_beginning_of_day ] )
+  end
+
   # This is used to find or create from a series name
   # If it finds the list, it checks that the current user can edit it.
   # If the current user cannot edit the list, then a new list is created with that name
