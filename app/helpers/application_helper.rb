@@ -1,3 +1,21 @@
+module ActionView
+  module Helpers
+    module AssetTagHelper
+      # Monkey punch so that these methods actually returns a path, and not a url
+
+      def javascript_path(source)
+        compute_public_path(source, 'javascripts', 'js', false)
+      end
+      alias_method :path_to_javascript, :javascript_path
+
+      def stylesheet_path(source)
+        compute_public_path(source, 'stylesheets', 'css', false)
+      end
+      alias_method :path_to_stylesheet, :stylesheet_path
+    end
+  end
+end
+
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   
