@@ -9,13 +9,17 @@ module CheckForUser
   
   private
 
-  def ensure_user_is_logged_in
+  def is_user_logged_in
     return true if User.current
+  end
+
+  def ensure_user_is_logged_in
+    return true if is_user_logged_in
     redirect_to_login
   end
 
   def ensure_user_is_local_or_administrator
-    return true if ensure_user_is_logged_in and (User.current.is_local_user? or User.current.administrator?)
+    return true if is_user_logged_in and (User.current.is_local_user? or User.current.administrator?)
     redirect_to_login
   end
   
