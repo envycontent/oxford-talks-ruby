@@ -1,21 +1,21 @@
-<div class='detailed'>
+<div class='ox-talks-detailed'>
 <% @errors.each do |error| %>
 <span class='error'>Error: <%=error%>. </span>
 <% end %>
 <% for talk in @talks %>
-<h2><%= link_talk talk %></h2>
+<h2 class='ox-talks-title'><%= link_talk_absolute talk %></h2>
 
 <%= talk.abstract_filtered %>
 
 <% if talk.special_message && !talk.special_message.empty? %>
-	<p class='urgent'><%= talk.special_message %></p>
+	<p class='ox-talks-urgent'><%= talk.special_message %></p>
 <% end %>
 
 <ul>
-	<li>Part of <%= link_list talk.series %></li>
-	<li>Speaker: <%= link_to_if talk.speaker, talk.name_of_speaker, user_url(:id => talk.speaker) %></li>
-	<li><%= format_time_of_talk talk %></li>
-	<li><%= link_list talk.venue %>.</li>
+	<li class='ox-talks-series'>Part of <%= link_list_absolute talk.series %></li>
+	<li class='ox-talks-speaker'>Speaker: <%= link_to_if talk.speaker, talk.name_of_speaker, user_url(:id => talk.speaker) %></li>
+	<li class='ox-talks-time'><%= format_time_of_talk talk %></li>
+	<li class='ox-talks-venue'><%= link_list_absolute talk.venue %>.</li>
 </ul>
 <% end %>
 </div>

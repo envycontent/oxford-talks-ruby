@@ -1,21 +1,3 @@
-module ActionView
-  module Helpers
-    module AssetTagHelper
-      # Monkey punch so that these methods actually returns a path, and not a url
-
-      def javascript_path(source)
-        compute_public_path(source, 'javascripts', 'js', false)
-      end
-      alias_method :path_to_javascript, :javascript_path
-
-      def stylesheet_path(source)
-        compute_public_path(source, 'stylesheets', 'css', false)
-      end
-      alias_method :path_to_stylesheet, :stylesheet_path
-    end
-  end
-end
-
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   
@@ -130,15 +112,31 @@ module ApplicationHelper
      link_to talk.title, talk_path(:id => talk), :class => 'click link'
    end
    
+   def link_talk_absolute( talk )
+     return "No talk" unless talk
+     link_to talk.title, talk_url(:id => talk), :class => 'click link'
+   end
+   
    def link_list( list )
      return "No list" unless list
       link_to list.name, list_path(:id => list)
    end
    
+   def link_list_absolute( list )
+     return "No list" unless list
+      link_to list.name, list_url(:id => list)
+   end
+    
    def link_user( user )
      return 'nobody' unless user
      link_to user.name || user.email[/[^@]*/], user_path(:id => user)
    end
+   
+   def link_user_absolute( user )
+     return 'nobody' unless user
+     link_to user.name || user.email[/[^@]*/], user_url(:id => user)
+   end
+   
    
    def page_title
       [InstallationHelper.CURRENT_INSTALLATION.talksSiteName,@list && @list.name, @talk && @talk.title, @user && @user.name ].compact.join(' : ')

@@ -1,1 +1,1 @@
-document.write("<%= @content_for_layout.gsub('"','\"').gsub("\n",'').gsub("\r","") %><p class='talks'>Powered by <a href=<%= InstallationHelper.CURRENT_INSTALLATION.talksSiteHost><%=InstallationHelper.CURRENT_INSTALLATION.talksSiteName>></a></p>");
+document.write("<%= @content_for_layout.gsub('"','\"').gsub("\n",'').gsub("\r","") %><p class='ox-talks'>Powered by <a href='http://<%=  InstallationHelper.CURRENT_INSTALLATION.talksSiteHost %>'><%= InstallationHelper.CURRENT_INSTALLATION.talksSiteName %></a></p>");
