@@ -22,4 +22,15 @@
 		margin: 0;
 		}
 
+div.ox-talks-table table {border-collapse: collapse;}
+div.ox-talks-table tr.ox-talks-header { color: #fff; background-color: #0099cc; text-align: left;}
+div.ox-talks-table th { padding: 0.5em 0.5em 0.5em 0.5em;}
+div.ox-talks-table td.ox-talks-standard { padding: 1em 0.5em 1em 0.5em;}
+div.ox-talks-table tr.ox-talks-even { background-color: #eeeeee; }
+div.ox-talks-table td.ox-talks-date { width: 6em;}
+div.ox-talks-table a { text-decoration:none; color: #000;}
+div.ox-talks-table a:visited { text-decoration:none; color: #000;}
+div.ox-talks-table a:hover 	{ text-decoration:underline; color: #003399;}
+div.ox-talks-table td.ox-talks-special { padding: 1em 0.5em 0em 0.5em;}
+div.ox-talks-table td.ox-talks-special_message { text-align: center; font-weight: bold; padding: 0em 0.5em 1em 0.5em; }
 
