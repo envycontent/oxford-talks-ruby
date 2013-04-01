@@ -1,12 +1,6 @@
 <h1><%= link_list(@custom_view.list)%></h1>
 
-<p>This page allows you to create your own customised view of the list. You may want to read <%= document 'syndicating talks', false, 'Instructions on creating a custom view of a list' %>.</p>
-
-<p>You must have javascript enabled for this page to work.</p>
-
-<p>Before using this facility to embed a feed in your own page, please read these <%= document 'warnings about the security of embedding feeds in your site' %>.</p>
-
-<p>Finally, there is a <%= document 'specification' %> that contains a little more detail about what to expect from this system.</p>
+<p>This page allows you to create your own customised view of the list.</p>
 
 <%= form_tag({:action => 'save'}, {:id => 'viewform'}) %>
 <%= hidden_field 'custom_view', 'list_id' %>

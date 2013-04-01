@@ -14,29 +14,40 @@ class CustomView < ActiveRecord::Base
   serialize :view_parameters
     
   def self.layout_options
+    # [ 
+    #   ['In a talks.cam webpage, with the default look','with_related'],
+    #   ['In a talks.cam webpage, with a minimal header and footer','minimal'],
+    #   ['For embedding in your web page (you provide the css)','embed'],
+    #   ['For embedding in your web page (we provide the css)','embedcss'],
+    #   ['With nothing (handy for xml, rss, ical etc)','empty']
+    # ]
     [ 
-      ['In a talks.cam webpage, with the default look','with_related'],
-      ['In a talks.cam webpage, with a minimal header and footer','minimal'],
-      ['For embedding in your web page (you provide the css)','embed'],
-      ['For embedding in your web page (we provide the css)','embedcss'],
-      ['With nothing (handy for xml, rss, ical etc)','empty']
+      ['In Oxford Talks (a link to a formatted page)','with_related'],
+      ['For embedding in your web page (a code snippet)','embed'],
+      ['For cutting and pasting (a link to a plain text page)','empty']
     ]
   end
   
   def self.action_options
+    # [ 
+    #   ['Default look','index'],
+    #   ['Compatible with old talks listing','old_talks'],
+    #   ['Laid out as a table','table'],
+    #   ['Minimalist look','minimalist'],
+    #   ['All the details about every talk','detailed'],
+    #   ['Basic details with series logos next to each talk','simplewithlogo'],
+    #   ['For one day meetings: no venue or dates','oneday'],
+    #   ['Printable bulletin style (e.g. for cutting and pasting into Word)','bulletin'],
+    #   ['As plain text (e.g. for cutting and pasting into email)','text'],
+    #   ['XML','xml'],
+    #   ['RSS','rss'],
+    #   ['iCalendar','ics'],
+    # ]
     [ 
-      ['Default look','index'],
-      ['Compatible with old talks listing','old_talks'],
+      ['Detailed view','detailed'],
       ['Laid out as a table','table'],
-      ['Minimalist look','minimalist'],
-      ['All the details about every talk','detailed'],
-      ['Basic details with series logos next to each talk','simplewithlogo'],
-      ['For one day meetings: no venue or dates','oneday'],
       ['Printable bulletin style (e.g. for cutting and pasting into Word)','bulletin'],
       ['As plain text (e.g. for cutting and pasting into email)','text'],
-      ['XML','xml'],
-      ['RSS','rss'],
-      ['iCalendar','ics'],
     ]
   end
   
