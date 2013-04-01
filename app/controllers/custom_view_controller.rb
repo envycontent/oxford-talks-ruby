@@ -67,7 +67,7 @@ class CustomViewController < ApplicationController
     unless ( custom_view != nil )
       return list_url(:id => 'notfound404')
     end
-    list_url( options_hash( custom_view, { :only_path => false,:id => custom_view.list_id }.merge(extra_options)) )
+    list_url( options_hash( custom_view, { :only_path => false,:id => custom_view.list_id, :protocol => "http" }.merge(extra_options)) )
   end
   
   def options_hash( custom_view, options = {})
@@ -81,6 +81,7 @@ class CustomViewController < ApplicationController
     options.delete 'limit_period'
     options[:action] = options['action']
     options[:layout] = options['layout']
+    Rails.logger.info options
     options
   end
   

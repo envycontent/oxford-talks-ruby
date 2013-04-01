@@ -3,9 +3,9 @@ module ApplicationHelper
   
   def subscribe_by_email_link
    if User.current && ( sub = EmailSubscription.find_by_list_id_and_user_id( @list.id, User.current.id ) )
-     link_to 'Halt your e-mail reminders', reminder_path(:action => 'destroy', :id => sub.id )
+     link_to 'Halt your e-mail reminders', reminder_url(:action => 'destroy', :id => sub.id )
    else
-     link_to 'Send you e-mail reminders', reminder_path(:action => 'create', :list => @list.id )
+     link_to 'Send you e-mail reminders', reminder_url(:action => 'create', :list => @list.id )
    end
   end
   
@@ -24,12 +24,12 @@ module ApplicationHelper
   def add_list_to_list_link
     if User.current && User.current.has_added_to_list?( @list )
       if User.current.only_personal_list?
-        link_to 'Remove from your list(s)', include_list_path(:action => 'destroy', :child => @list)
+        link_to 'Remove from your list(s)', include_list_url(:action => 'destroy', :child => @list)
       else
-        link_to 'Add/Remove from your list(s)', include_list_path(:action => 'create', :child => @list)
+        link_to 'Add/Remove from your list(s)', include_list_url(:action => 'create', :child => @list)
       end
     else
-      link_to 'Add to your list(s)', include_list_path(:action => 'create', :child => @list)
+      link_to 'Add to your list(s)', include_list_url(:action => 'create', :child => @list)
     end
   end
   

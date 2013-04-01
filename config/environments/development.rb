@@ -21,8 +21,7 @@ config.action_controller.perform_caching             = false
 # Don't care if the mailer can't send
 config.action_mailer.raise_delivery_errors = false
 
-# Point the images etc to our test server
-# config.action_controller.asset_host = 'http://talks.cam.ac.uk:3000'
+# config.action_controller.asset_host = 'http://localhost:3000'
 
 # Make sure our sessions don't conflict with the live version
 ActionController::CgiRequest::DEFAULT_SESSION_OPTIONS[:session_key] = '_development_session_id'

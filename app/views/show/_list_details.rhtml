@@ -1,14 +1,14 @@
 
 <div class='listdetail click'>
-	<%= link_to logo(@list, :medium), list_details_path( :id => @list ) %>
-<h1><%= link_list @list %></h1>
+	<%= link_to logo(@list, :medium), list_details_url( :id => @list ) %>
+<h1><%= link_list_absolute @list %></h1>
 
 <p class='actions'>
 	<%= add_list_to_list_link %>
 	<%= subscribe_by_email_link %>
-	<%= link_to 'Further detail', list_details_path( :id => @list ), :class => 'click' %>
+	<%= link_to 'Further detail', list_details_url( :id => @list ), :class => 'click' %>
 <% if @list.editable? %>
-	<%= link_to 'Edit this list', list_details_path( :id => @list, :action => "edit" ) %>
+	<%= link_to 'Edit this list', list_details_url( :id => @list, :action => "edit" ) %>
 <% end %>
 	<br/><%= link_to 'Subscribe using ical/vcal', {:controller => 'show', :action => 'ics', :id => @list, :only_path => false, :protocol => 'webcal://'}, {:style => 'margin-right: 0px'} %> <%= document('Help with icalendar', false, '(Help)') %>
 </p>
