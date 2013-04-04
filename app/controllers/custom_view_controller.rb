@@ -81,7 +81,6 @@ class CustomViewController < ApplicationController
     options.delete 'limit_period'
     options[:action] = options['action']
     options[:layout] = options['layout']
-    Rails.logger.info options
     options
   end
   
