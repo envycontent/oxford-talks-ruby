@@ -13,7 +13,7 @@
 	
 	<h3>Speaker's e-mail</h3>
 	<%= f.text_field :speaker_email, :size => '60', :class => 'wide'  %>
-	<p class='emailcheck'><%= f.check_box :send_speaker_email %>Check this box to send an e-mail to the speaker when you save this talk.</p>
+	<p class='emailcheck'><%= f.check_box :send_speaker_email %>Check this box to send an e-mail to the speaker when you save this talk. Note, this only works for members of <%= InstallationHelper.CURRENT_INSTALLATION.collegeOrUniversityName %>.</p>
 
 	<h3>Speaker's name</h3>
 	<%= f.text_field :name_of_speaker, :size => '60', :class => 'wide'  %>
