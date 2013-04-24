@@ -105,7 +105,6 @@ class Talk < ActiveRecord::Base
 
   def list_id_strings=(ids)
     logger.debug "list id strings"
-    logger.debug ids
     ids.each { |id| List.find_by_id_and_check_management(Integer(id)).add(self) }
   end
   
