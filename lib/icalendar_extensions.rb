@@ -21,7 +21,7 @@ end
 class Array
   
   def to_ics
-    ("BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//talks.cam.ac.uk//v3//EN\r\n" +
+    ("BEGIN:VCALENDAR\r\nVERSION:2.0\r\n" +
     map {|element| element.to_ics }.join("\r\n") +
     "\r\nEND:VCALENDAR\r\n")
   end
