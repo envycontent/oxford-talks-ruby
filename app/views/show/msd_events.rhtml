@@ -1,0 +1,43 @@
+<!-- Layout based on MSD News and Events -->
+<div class='oxtalks-events'>
+<% @errors.each do |error| %>
+<span class='error'>Error: <%=error%>. </span>
+<% end %>
+
+<% current_month, current_year = nil, nil %>
+<% @talks.group_by(&:date).sort_by { |date,talks| date }.each do |date,talks| %>
+
+
+<% talks.each do |talk| %>
+
+<div class="newsitem">
+   <div class="date">
+   <span class="weekday"><%= date.strftime '%a' %></span>
+   <span class="day"><%= date.strftime '%d' %></span>
+   <span class="month"><%= date.strftime '%b' %></span>
+
+   </div>
+
+	 <div class="news_content">
+
+            <h2 class="ox-talks-title"><%= link_talk_absolute talk %></h2>
+            <h3 class='ox-talks-speaker'><%= talk.name_of_speaker %></h3>
+            <h3 class="ox-talks-start"><%= cam_time_format( talk.start_time.strftime('%I.%M%p' ) )%> <%= link_list_absolute talk.venue %></h3>
+        	<div class='ox-talks-details'><%= talk.abstract_filtered %></div>
+
+        	<% if talk.special_message && !talk.special_message.empty? %>
+        	<div class="ox-talks-urgent"><%= "\n#{talk.special_message}" %></div>
+        	<% end %>
+            
+    </div>  
+	    
+	    
+	</div>
+		
+	
+
+	<% end %>
+<% end %>
+
+
+</div>
