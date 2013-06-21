@@ -419,11 +419,17 @@ form#editlist {
 }
 
 	form#editlist h3 { 
-		font-size: 0.6em; 
+		font-size: 0.8em; 
 		font-style: normal; 
 		border: none; 
 		margin: 1em 0 0 1px;  
 		}
+		
+	form#editlist p.emailcheck {
+		margin: 0;
+		font-size: 0.8em; 
+	}
+
 	
 	form#editlist input[type='text'] { 
 		width: 35em;

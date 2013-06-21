@@ -13,7 +13,7 @@
 	
 	<h3>Speaker's e-mail</h3>
 	<%= f.text_field :speaker_email, :size => '60', :class => 'wide'  %>
-	<p class='emailcheck'><%= f.check_box :send_speaker_email %>Check this box to send an e-mail to the speaker when you save this talk. Note, this only works for members of <%= InstallationHelper.CURRENT_INSTALLATION.collegeOrUniversityName %>.</p>
+	<p class='emailcheck'><%= f.check_box :send_speaker_email %>Check this box to send an e-mail to the speaker when you save this talk.</p>
 
 	<h3>Speaker's name</h3>
 	<%= f.text_field :name_of_speaker, :size => '60', :class => 'wide'  %>
@@ -36,9 +36,8 @@
 	<h3>Time HH:MM</h3>
 	<%= f.text_field :start_time_string, :size => '5' %> to <%= f.text_field :end_time_string, :size => '5' %> 
 	
-	<h3>Publicity</h3>
-	<p class='emailcheck'><%= f.check_box :ex_directory %> If checked,
-this talk will not appear in the index or search results, but will still be
+	<h3>Ex-Directory</h3>
+	<p class='emailcheck'><%= f.check_box :ex_directory %> <b>Clear this box to publish your talk.</b> If this box is ticked, your talk WILL NOT APPEAR in the index or search results, but will still be
 found by Google and similar sites.
 (<%= link_to 'Tell me more', document_url(:name => 'Privacy and Publicity') %>)</p>
 

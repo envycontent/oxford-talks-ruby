@@ -4,12 +4,13 @@
 <%= text_area :list, :details %>
 <h3>Image or logo</h3>
 <%= file_field :list, :image %>
-<div class="column">
-<p>The system will automatically re-size the image, but if you can use one that is as close to 128x128 pixels it will work best.  The image may be of tif, gif, png or jpg format. Please do not try and upload images larger than 1 megabyte in size.</p>
+
+<p class='emailcheck'>A size of 128x128 pixels will work best (images are automatically re-sized).<br />Use tif, gif, png or jpg format.<br /> There is a file-size limit of 1MB.</p>
 <p><%= logo @list, :medium %><%= logo @list, :small %></p>
-<p><%= check_box :list, :ex_directory %> If checked, will not appear in the
-index or search results, but will still be found by Google and similar sites.
-(<%= link_to 'Tell me more', document_url(:name => 'Privacy and Publicity') %>)
-</p>
-</div>
+<h3>Ex-Directory</h3>
+<p class='emailcheck'><%= check_box :list, :ex_directory %> <b>Clear this box to publish your list. </b><br />If this box is ticked,
+your list WILL NOT APPEAR in the index or search results, but will still be
+found by Google and similar sites.
+(<%= link_to 'Tell me more', document_url(:name => 'Privacy and Publicity') %>)</p>
+
 <p><%= submit_tag 'Save' %>  or <%= link_to 'Cancel', @list.id ? list_details_path(:action => 'edit', :id => @list.id) : home_path %></p>	
