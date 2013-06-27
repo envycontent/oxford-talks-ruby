@@ -5,3 +5,4 @@ Disallow: /show/text
 Disallow: /login
 Disallow: /reminder
 Disallow: /include
+Disallow: /archive/
