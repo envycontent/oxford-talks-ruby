@@ -25,6 +25,14 @@ class ShowController < ApplicationController
     end
   end
   
+  # For json
+  def json
+    render :json => @talks.to_json(:include => {:venue => {:only => :name},
+                                                :series => {:only => :name},
+                                                :organiser => {:only => :name},
+                                                })
+  end
+  
   # For watching as a feed
 	def rss
 		headers["Content-Type"] = "text/xml; charset=utf-8"
