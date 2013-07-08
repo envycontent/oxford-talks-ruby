@@ -1,19 +1,12 @@
-<% inst = InstallationHelper.CURRENT_INSTALLATION %>
-
-<%= link_to image_tag(inst.collegeOrUniversityLogoURL, :alt => '[' + inst.collegeOrUniversityName + ']', :class => 'logo'), inst.collegeOrUniversityURL %>
-<%= link_to image_tag(inst.talksBigLogoURL, :alt => '[' + inst.talksSiteName + ']', :class => 'logo'), home_url %>
+<script type="text/javascript">Behaviour.register(leftbar_rules)</script>
 
 <div class='fullwidthlinks'>
+
 
 <%= render 'shared/user_information' %>
 
 <%= render 'shared/help'%>
 
-<h2>Links</h2>
-<% protocol = request.protocol %>
-<% protocol = protocol[0, protocol.length - 3] %>
-<%= link_to 'Bookmark Oxford Talks'+arrow, 'javascript:addToFavorites()' %>
-<%= link_to 'Oxford University Podcasts'+arrow, 'http://podcasts.ox.ac.uk' %>
-<iframe src= <%= "\"" + protocol + "://www.facebook.com/plugins/likebox.php?href=" + protocol + "%3A%2F%2Fwww.facebook.com%2Fpages%2FOxford-Talks-Website%2F142043542499306%3Fref%3Dts&amp;width=180&amp;colorscheme=light&amp;connections=0&amp;stream=false&amp;header=false&amp;height=63\"" %> scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:180px; height:127px;" allowTransparency="true"></iframe>
+
 
 </div>
