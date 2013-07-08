@@ -58,11 +58,19 @@ class ShowController < ApplicationController
   end
   
   def decode_time_period
-    if params[:id] == "all_future_managed_talks"
+    case params[:id]
+    when "all_future_managed_talks"
       @list = nil
       @talks = Talk.find(:all, :conditions => ["ex_directory = FALSE and start_time > ?", DateTime.now])
       @talks = @talks.select{ |talk| talk.series.list_type == "managed" }
       @errors = []
+    when "upcoming_talks"
+      @list = nil
+      @talks = Talk.find(:all, 
+                         :conditions => ["ex_directory = FALSE and start_time > ?", DateTime.now],
+                         :order => "start_time" ,
+                         :limit => 30)
+      @errors = []    
     else
       @list = List.find params[:id]
       finder = TalkFinder.new(params)
