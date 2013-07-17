@@ -64,6 +64,7 @@ class Talk < ActiveRecord::Base
 	end 
   end
 
+  
   before_save :update_html_for_abstract
   before_save :check_if_venue_or_series_changed
   before_save :ensure_speaker_initialized
@@ -73,7 +74,9 @@ class Talk < ActiveRecord::Base
 
   def sort_of_delete
     self.ex_directory = true
-    self.special_message = "This talk has been canceled/deleted"
+    self.special_message = "This item has been marked for deletion from Oxford Talks and set to ex-directory. 
+                            Search Oxford Talks or follow any external links given in the abstract for up-to-date 
+                            information about the talk."
     self.save
     
     ListTalk.delete_all ['talk_id = ?',id]
@@ -105,8 +108,26 @@ class Talk < ActiveRecord::Base
 
   def list_id_strings=(ids)
     logger.debug "list id strings"
+    logger.debug ids
     ids.each { |id| List.find_by_id_and_check_management(Integer(id)).add(self) }
   end
+
+  # Short cut to the series name
+  #def series_name
+  #  series ? series.name : ""
+  #end
+  
+  #def series_name=(new_series_name)
+  #  self.series = new_series_name.blank? ? nil : List.find_or_create_by_name_while_checking_management(new_series_name)
+  #end
+  
+  #def list_names
+  #  lists.collect { |list| list.name }
+  #end
+  
+  #def list_names=(new_list_names)
+  #  new_list_names.each { |listName| List.find_or_create_by_name_while_checking_management(listName).add(self) }
+  #end
   
   # Short cut to the venue name
   def venue_name
@@ -269,7 +290,6 @@ class Talk < ActiveRecord::Base
   def possibly_send_the_speaker_an_email
     return unless send_speaker_email == '1'
     return true unless speaker_email && speaker_email =~ /.*?@.*?\..*/
-    return true unless speaker.is_local_user?
     Mailer.deliver_speaker_invite( speaker, self )
 #    speaker.send_password
   end
@@ -310,6 +330,7 @@ class Talk < ActiveRecord::Base
         "END:VEVENT"
       ].join("\r\n")
     end
+
   
   private
   
