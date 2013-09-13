@@ -25,12 +25,24 @@ class ShowController < ApplicationController
     end
   end
   
-  # For json
+  # For json or jsonp with callback parameter
+  
   def json
     render :json => @talks.to_json(:include => {:venue => {:only => :name},
                                                 :series => {:only => :name},
                                                 :organiser => {:only => :name},
-                                                })
+                                                }),
+            :callback => params[:callback]
+  end
+  
+  # For jsonp
+  def js
+    ActiveRecord::Base.include_root_in_json = true
+    render :json => @talks.to_json(:include => {:venue => {:only => :name},
+                                                :series => {:only => :name},
+                                                :organiser => {:only => :name},
+                                                }),
+            :callback => 'callback'
   end
   
   # For watching as a feed

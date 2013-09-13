@@ -36,32 +36,32 @@ class Talk < ActiveRecord::Base
   # validate the time strings. This method keeps as close as possible to Tom's original validation (just the regexp), while also checking it can be parsed into a real time (so no 25:76 entries)
   validates_each :start_time_string, :end_time_string do |record, attr, value|
    if not value.blank?
-if value =~ %r{\d+:\d+}
-begin
-   Time.parse(value)
-rescue ArgumentError
-   record.errors.add(attr)
-   end
-   else
-record.errors.add(attr)
-end	
-end
-  end
+      if value =~ %r{\d+:\d+}
+        begin
+          Time.parse(value)
+        rescue ArgumentError
+          record.errors.add(attr)
+        end
+      else
+        record.errors.add(attr)
+      end	
+    end
+    end
 
 
   # validate the date. This method keeps as close as possible to Tom's original validation (just the regexp), while also checking it can be parsed into a real date (so no 2008/12/12312 entries)
   validates_each :date_string do |record, attr, value|
    if not value.blank?
-if value =~ %r{\d\d\d\d/\d+/\d+}
-begin
-   Date.parse(value)
-rescue ArgumentError
-   record.errors.add(attr)
+     if value =~ %r{\d\d\d\d/\d+/\d+}
+       begin
+         Date.parse(value)
+       rescue ArgumentError
+         record.errors.add(attr)
+       end
+     else
+       record.errors.add(attr)
+     end	
    end
-   else
-record.errors.add(attr)
-end	
-end
   end
 
   before_save :update_html_for_abstract
