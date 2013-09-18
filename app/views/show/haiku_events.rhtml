@@ -1,0 +1,121 @@
+<!-- Layout based on Haiku Events -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<style>
+h3 {
+    border-bottom: 1px solid #AAAFB8;
+    color: #203E58;
+    font-family: helvetica,arial,sans-serif;
+    font-size: 1.14286em;
+    font-weight: 400;
+    line-height: 1.375em;
+    margin-bottom: 0.71429em;
+    padding-bottom: 0.8125em;
+    padding-top: 0.25em;
+}
+ol, ul {
+    list-style: none outside none;
+    margin:0;
+    padding:0;
+}
+
+li {margin:0}
+
+h3 + .large-list {
+    margin-top: -0.91667em;
+}
+.large-list {
+    margin-bottom: 3.14286em;
+    overflow: hidden;
+}
+.large-list li {
+    border-bottom: 1px solid #DFE1E4;
+    overflow: hidden;
+    padding: 1.57143em 0;
+}
+.large-list .date-spot {
+    float: left;
+    margin-right: 1.96078%;
+    padding-left: 0.55em;
+    text-align: center;
+    width: 6.53595%;
+}
+.large-list .date-spot {
+    -moz-box-sizing: border-box;
+    color: #95B6D3;
+    display: inline;
+    float: left;
+    font-family: helvetica,arial,sans-serif;
+    font-size: 1.14286em;
+    font-weight: 100;
+}
+.large-list .date-spot + .content-spot {
+    float: right;
+    margin-right: 0;
+    width: 91.5033%;
+}
+.large-list .content-spot {
+    display: inline;
+    font-family: Arial,sans-serif;
+    
+
+}
+.detail {
+    color: #727295;
+    font-family: Arial,sans-serif;
+    font-size: 0.78571em;
+    line-height: 2em;
+    display: block;
+}
+.large-list .content-spot a {
+    color: #203E58;
+    display: block;
+    font-size: 1em;
+    font-weight: 600;
+    margin: 0;
+    text-decoration:inherit;
+}
+</style>
+</head>
+<body>
+<ul>
+    
+<% @errors.each do |error| %>
+<span class='error'>Error: <%=error%>. </span>
+<% end %>
+
+    
+<% @talks.group_by(&:month).sort_by { |month,talks| month }.each do |month,talks| %>
+<li>
+<h3><%= month.strftime '%B %Y' %></h3>
+
+<ul class='large-list'>
+     <% talks.each do |talk| %>
+      <li>
+         <div class="date-spot">
+         <span class="day"><%= talk.start_time.strftime '%d' %></span>
+
+         </div>
+
+      	 <div class="content-spot">
+
+                  <span><%= link_talk_absolute talk %></span>
+                  <span><%= talk.name_of_speaker %></span>
+                  <span class='detail'><%= cam_time_format( talk.start_time.strftime('%I.%M%p' ) )%> <%= talk.venue %></span>
+
+
+          </div>  
+
+
+      </li>
+      <% end %>
+</ul>
+</li>
+
+<% end %>
+
+</ul>
+</body>
+</html>

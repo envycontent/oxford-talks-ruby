@@ -7,8 +7,8 @@ class Talk < ActiveRecord::Base
   end
   
   def Talk.random_and_in_the_future(number_of_talks_to_find = 1, exclude_talk_id = 0 )
-    Talk.find_public(:all, :order => 'RAND()',
-                            :limit => number_of_talks_to_find,
+    Talk.find_public(:all,  :order => 'RAND()', 
+                            :limit => number_of_talks_to_find, 
                             :conditions => ["id != ? AND start_time > ?",exclude_talk_id,Time.now])
   end
   
@@ -24,52 +24,53 @@ class Talk < ActiveRecord::Base
   has_many :list_talks, :dependent => :destroy, :extend => FindDirectExtension
   
   # Interesting relationships
-  belongs_to :speaker, :foreign_key => 'speaker_id', :class_name => 'User'
-  belongs_to :organiser, :foreign_key => 'organiser_id', :class_name => 'User'
-  belongs_to :series, :class_name => 'List', :foreign_key => 'series_id'
-  belongs_to :venue, :class_name => 'List', :foreign_key => 'venue_id'
-  has_many :lists, :through => :list_talks, :extend => FindDirectExtension
+  belongs_to  :speaker, :foreign_key => 'speaker_id', :class_name => 'User'
+  belongs_to  :organiser, :foreign_key => 'organiser_id', :class_name => 'User'
+  belongs_to  :series, :class_name => 'List', :foreign_key => 'series_id'
+  belongs_to  :venue, :class_name => 'List', :foreign_key => 'venue_id'
+  has_many    :lists, :through => :list_talks, :extend => FindDirectExtension 
    
   # This is to allow a custom image to be loaded
   include BelongsToImage
   
-  # validate the time strings. This method keeps as close as possible to Tom's original validation (just the regexp), while also checking it can be parsed into a real time (so no 25:76 entries)
+  # validate the time strings.  This method keeps as close as possible to Tom's original validation (just the regexp), while also checking it can be parsed into a real time (so no 25:76 entries)
   validates_each :start_time_string, :end_time_string do |record, attr, value|
-   if not value.blank?
-      if value =~ %r{\d+:\d+}
-        begin
-          Time.parse(value)
-        rescue ArgumentError
-          record.errors.add(attr)
-        end
-      else
-        record.errors.add(attr)
-      end	
-    end
-    end
-
-
-  # validate the date. This method keeps as close as possible to Tom's original validation (just the regexp), while also checking it can be parsed into a real date (so no 2008/12/12312 entries)
-  validates_each :date_string do |record, attr, value|
-   if not value.blank?
-     if value =~ %r{\d\d\d\d/\d+/\d+}
-       begin
-         Date.parse(value)
-       rescue ArgumentError
-         record.errors.add(attr)
-       end
-     else
-       record.errors.add(attr)
-     end	
-   end
+  	if not value.blank?
+	  	if value =~ %r{\d+:\d+} 
+		  	begin
+  				Time.parse(value) 
+	  		rescue ArgumentError
+  				record.errors.add(attr)  
+  			end
+  		else
+			record.errors.add(attr) 
+		end		
+	end 
   end
 
+
+  # validate the date.  This method keeps as close as possible to Tom's original validation (just the regexp), while also checking it can be parsed into a real date (so no 2008/12/12312 entries)
+  validates_each :date_string do |record, attr, value|
+  	if not value.blank?
+	  	if value =~ %r{\d\d\d\d/\d+/\d+} 
+		  	begin
+  				Date.parse(value) 
+	  		rescue ArgumentError
+  				record.errors.add(attr)  
+  			end
+  		else
+			record.errors.add(attr) 
+		end		
+	end 
+  end
+
+  
   before_save :update_html_for_abstract
   before_save :check_if_venue_or_series_changed
   before_save :ensure_speaker_initialized
   after_validation :update_start_and_end_times_from_strings
-  after_save :add_to_lists
-  after_save :possibly_send_the_speaker_an_email
+  after_save  :add_to_lists
+  after_save  :possibly_send_the_speaker_an_email
 
   def sort_of_delete
     self.ex_directory = true
@@ -107,8 +108,26 @@ class Talk < ActiveRecord::Base
 
   def list_id_strings=(ids)
     logger.debug "list id strings"
+    logger.debug ids
     ids.each { |id| List.find_by_id_and_check_management(Integer(id)).add(self) }
   end
+
+  # Short cut to the series name
+  #def series_name
+  #  series ? series.name : ""
+  #end
+  
+  #def series_name=(new_series_name)
+  #  self.series = new_series_name.blank? ? nil : List.find_or_create_by_name_while_checking_management(new_series_name)
+  #end
+  
+  #def list_names
+  #  lists.collect { |list| list.name }
+  #end
+  
+  #def list_names=(new_list_names)
+  #  new_list_names.each { |listName| List.find_or_create_by_name_while_checking_management(listName).add(self) }
+  #end
   
   # Short cut to the venue name
   def venue_name
@@ -129,7 +148,7 @@ class Talk < ActiveRecord::Base
   end
   
   def ensure_speaker_initialized
-    if not speaker.nil?
+    if not speaker.nil? 
       if not speaker.last_login and speaker.crsid.nil?
         # Attempt to set sensible defaults for the speaker, but only
         # if they haven't logged in before and are not locals
@@ -166,18 +185,18 @@ class Talk < ActiveRecord::Base
 
   # Tries to figure these out from the name of speaker field if no speaker given
   #def speaker_name
-  # return "" unless self.name_of_speaker
-  # self.name_of_speaker[/^\s*([^,(]*)/,1].strip
+  #  return "" unless self.name_of_speaker
+  #  self.name_of_speaker[/^\s*([^,(]*)/,1].strip
   #end
   
   #def speaker_affiliation
-  # return "" unless self.name_of_speaker
-  # self.name_of_speaker[/[,(]([^)]*)[)]?/,1] || ""
+  #  return "" unless self.name_of_speaker
+  #  self.name_of_speaker[/[,(]([^)]*)[)]?/,1] || ""
   #end
   
   # Short cut to speaker email
   #def speaker_email
-  # speaker ? speaker.email : ""
+  #  speaker ? speaker.email : ""
   #end
   
 # FIXME for some reason this broke in Ruby 1.8.7
@@ -189,25 +208,25 @@ class Talk < ActiveRecord::Base
 # to ""; then when before_save calls ensure_speaker_initialized, name_of_speaker
 # is now initialized and we can fill in speaker.name and speaker.affiliation
   #def speaker_email=(email)
-  # return if email.blank?
-  # self.speaker = User.find_or_create_by_email_including_locals(email)
+  #  return if email.blank?
+  #  self.speaker = User.find_or_create_by_email_including_locals(email)
   #
-  # return if speaker.last_login # don't mess with real users' input
-  # # This relies on the correct ordering of the setting of speaker_email and speaker_name
-  # if !speaker.name || (speaker.name == "")
-  # speaker.name = speaker_name
-  # end
-  # if !speaker.affiliation || (speaker.affiliation == "")
-  # speaker.affiliation = speaker_affiliation
-  # end
-  # speaker.save
+  #  return if speaker.last_login # don't mess with real users' input
+  #  # This relies on the correct ordering of the setting of speaker_email and speaker_name
+  #  if !speaker.name || (speaker.name == "")
+  #    speaker.name = speaker_name
+  #  end
+  #  if !speaker.affiliation || (speaker.affiliation == "")
+  #    speaker.affiliation = speaker_affiliation
+  #  end
+  #  speaker.save
   #end
 
   #def ensure_speaker_initialized
-  # # Can't say speaker_email=speaker_email as this gets optimised out
-  # # Have to do this instead to force it to call speaker_email again
-  # self.send("speaker_email=", speaker_email)
-  # return
+  #  # Can't say speaker_email=speaker_email as this gets optimised out
+  #  # Have to do this instead to force it to call speaker_email again
+  #  self.send("speaker_email=", speaker_email)
+  #  return
   #end
   
   # For security
@@ -218,7 +237,7 @@ class Talk < ActiveRecord::Base
     (series.users.include? User.current )
   end
     
-  # This provides the talks start and end time in
+  # This provides the talks start and end time in 
   # a format convenient for using in the create talk
   # feature
   def time_slot
@@ -240,6 +259,11 @@ class Talk < ActiveRecord::Base
     start_time.to_date
   end
   
+  def month
+    return nil unless start_time
+    start_time.strftime("%Y/%m/01").to_date
+  end   
+  
   def date_string
     @date_string || (start_time && start_time.strftime('%Y/%m/%d'))
   end
@@ -257,7 +281,7 @@ class Talk < ActiveRecord::Base
   
   def update_start_and_end_times_from_strings
     #Don't try to run this unless we have sensible strings to work with
-    return unless @start_time_string && @end_time_string && !@date_string.blank? && errors.count==0
+    return unless @start_time_string && @end_time_string &&  !@date_string.blank? && errors.count==0
     year,month, day = date_string.split('/')
     start_hour, start_minute = start_time_string.split(':')
     end_hour, end_minute = end_time_string.split(':')
@@ -271,9 +295,8 @@ class Talk < ActiveRecord::Base
   def possibly_send_the_speaker_an_email
     return unless send_speaker_email == '1'
     return true unless speaker_email && speaker_email =~ /.*?@.*?\..*/
-    return true unless speaker.is_local_user?
     Mailer.deliver_speaker_invite( speaker, self )
-# speaker.send_password
+#    speaker.send_password
   end
   
   # FIXME: Refactor with the code in the show controller
@@ -312,14 +335,16 @@ class Talk < ActiveRecord::Base
         "END:VEVENT"
       ].join("\r\n")
     end
+
   
   private
   
   # FIXME: Refactor with the code in the show controller
-def month_range( year, start_month, end_month )
+	def month_range( year, start_month, end_month )
     # Remove the 999..99 usecs (changed in rails)
-    return Time.local( year, start_month ).at_beginning_of_month,
+    return Time.local( year, start_month ).at_beginning_of_month, 
       Time.local(year,end_month).at_end_of_month.change(:usec => 0)
-end
+	end
   
 end
+
