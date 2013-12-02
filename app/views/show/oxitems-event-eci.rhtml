@@ -1,0 +1,37 @@
+
+<% @errors.each do |error| %>
+<span class='error'>Error: <%=error%>. </span>
+<% end %>
+
+<% for talk in @talks %>
+<span class="oxitems_item_content_span">   
+    <div class="vevent" xmlns="http://www.w3.org/1999/xhtml">
+        <span title="<%= talk.created_at %>" class="dtstamp"></span>  
+        <span title="<%= talk.id %>" class="uid"></span>
+        <span class="icalendar_link_span"> 
+            <a href="<%= talk_url(:id => talk.id, :action => 'vcal' ) %>" class="icalendar_link_url">
+                <img alt="iCalendar link" title="iCalendar link" src="http://www.oucs.ox.ac.uk/images/icalendar.png" class="icalendar_link_label">
+                
+            </a> 
+        </span>
+        <span class="summary"><%= link_talk_absolute talk %></span>
+        <span class="summary">
+        <%= link_to_if talk.speaker, talk.name_of_speaker, user_url(:id => talk.speaker) %>
+        </span>
+        <div class="description">
+        <%= talk.abstract_filtered %>
+
+        <% if talk.special_message && !talk.special_message.empty? %>
+        	<p class='ox-talks-urgent'><%= talk.special_message %></p>
+        <% end %>
+
+        </div>
+        <span class="event_date_and_time_details">
+            <%= format_time_of_talk talk %>   
+        </span>
+        <span class="location"><%= link_list_absolute talk.venue %></span>
+        
+    </div>
+</span>
+
+<% end %>
