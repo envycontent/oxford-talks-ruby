@@ -28,6 +28,8 @@ ActionController::Routing::Routes.draw do |map|
   map.list_user 'list/:list_id/managers/:action', :controller => 'list_user', :action => 'index'
   map.list_details 'list/:action/:id', :controller => 'list', :action => 'index'
 
+  map.noauth 'feeds/:action/:id', :controller => 'show'
+  
   map.new_user 'user/new', :controller => 'user', :action => 'new'
   map.user 'user/:action/:id', :controller => 'user', :action => 'show'
   map.talk 'talk/:action/:id', :controller => 'talk', :action => 'index'
