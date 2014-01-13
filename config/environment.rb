@@ -42,9 +42,9 @@ Rails::Initializer.run do |config|
   # See Rails::Configuration for more options
 
   # This is neccessary to make the images in embedded feeds work
-  config.action_controller.asset_host = Proc.new { |source, request|
-    "#{request.protocol}#{request.host_with_port}"
-  }
+  # config.action_controller.asset_host = Proc.new { |source, request|
+  #   "#{request.protocol}#{request.host_with_port}"
+  # }
   
   # Configure the mailer
   config.action_mailer.delivery_method = :sendmail
