@@ -45,7 +45,9 @@ Rails::Initializer.run do |config|
   # config.action_controller.asset_host = Proc.new { |source, request|
   #   "#{request.protocol}#{request.host_with_port}"
   # }
-  
+
+  config.action_controller.asset_host = "talks.ox.ac.uk"
+
   # Configure the mailer
   config.action_mailer.delivery_method = :sendmail
   config.action_mailer.raise_delivery_errors = true
