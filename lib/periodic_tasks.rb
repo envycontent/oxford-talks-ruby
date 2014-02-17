@@ -25,11 +25,11 @@ class PeriodicTasks
     RAILS_DEFAULT_LOGGER.info("PeriodicTasks.daily @ #{Time.now}: About to purge old sessions")
     ActiveRecord::SessionStore::Session.delete_all( ['updated_at < ?', 1.week.ago ] ) # Purge our old session table
 
-    RAILS_DEFAULT_LOGGER.info("PeriodicTasks.daily @ #{Time.now}: About to call RelatedList.update_all_lists_and_talks")
-    RelatedList.update_all_lists_and_talks
-
-    RAILS_DEFAULT_LOGGER.info("PeriodicTasks.daily @ #{Time.now}: About to call RelatedTalk.update_all_lists_and_talks")
-    RelatedTalk.update_all_lists_and_talks
+    # RAILS_DEFAULT_LOGGER.info("PeriodicTasks.daily @ #{Time.now}: About to call RelatedList.update_all_lists_and_talks")
+    # RelatedList.update_all_lists_and_talks
+    # 
+    # RAILS_DEFAULT_LOGGER.info("PeriodicTasks.daily @ #{Time.now}: About to call RelatedTalk.update_all_lists_and_talks")
+    # RelatedTalk.update_all_lists_and_talks
 
     RAILS_DEFAULT_LOGGER.info("PeriodicTasks.daily @ #{Time.now}: Finished")
 
