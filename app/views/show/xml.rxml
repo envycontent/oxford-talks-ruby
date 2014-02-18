@@ -6,6 +6,9 @@ xml.list do
     xml.name @list.name
     xml.details @list.details
     xml.url list_url(:id => @list.id)
+    if @list.image_id
+      xml.image picture_url(:id=> @list.image_id, :geometry => '128x128')
+    end
   end
 
   @errors.each do |error|
@@ -23,6 +26,10 @@ xml.list do
       end
       xml.special_message talk.special_message
       xml.url talk_url(:id => talk.id )
+      
+      if talk.image_id
+          xml.image picture_url(:id=> talk.image_id, :geometry => '128x128')
+      end
       
       xml.start_time talk.start_time.to_formatted_s(:rfc822)
       xml.end_time talk.end_time.to_formatted_s(:rfc822)
