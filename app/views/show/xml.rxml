@@ -7,7 +7,9 @@ xml.list do
     xml.details @list.details
     xml.url list_url(:id => @list.id)
     if @list.image_id
-      xml.image picture_url(:id=> @list.image_id, :geometry => '128x128')
+      xml.image picture_url(:id=> @list.image_id)
+      xml.image_medium picture_url(:id=> @list.image_id, :geometry => '128x128')
+      xml.image_small picture_url(:id=> @list.image_id, :geometry => '32x32')     
     end
   end
 
@@ -28,7 +30,9 @@ xml.list do
       xml.url talk_url(:id => talk.id )
       
       if talk.image_id
-          xml.image picture_url(:id=> talk.image_id, :geometry => '128x128')
+          xml.image picture_url(:id=> talk.image_id)
+          xml.image_medium picture_url(:id=> talk.image_id, :geometry => '128x128')
+          xml.image_small picture_url(:id=> talk.image_id, :geometry => '32x32')
       end
       
       xml.start_time talk.start_time.to_formatted_s(:rfc822)
