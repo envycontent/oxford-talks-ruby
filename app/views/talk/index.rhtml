@@ -15,8 +15,9 @@
 		<li><%= image_tag 'clock.jpg' %><%= format_time_of_talk @talk %></li>
 		<li><%= image_tag 'house.jpg' %><%= link_list @talk.venue %>.</li>
 	</ul>
-
+        <% if @talk.organiser %>
 		<p>If you have a question about this talk, please contact <%= link_user @talk.organiser %>.</p>
+		<% end %>
 		
 		<% if @talk.special_message %>
 			<p class='urgent'><%= @talk.special_message %></p>

@@ -35,7 +35,7 @@
 <h3><%= @time.strftime '%A %d %B %Y' %></h3>
 <ul>
 <% @talks.each do |talk| %>
-	<li><%= talk.start_time.strftime('%H:%M') %> - <%= link_talk talk %></li>
+	<li><%= talk.start_time.strftime('%H:%M') %> - <%= link_talk talk %> (<span class='series'><%= link_list(talk.series)%></span>)</li>
 <% end %>
 </ul>
 

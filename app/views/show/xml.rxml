@@ -22,6 +22,7 @@ xml.list do
       xml.id talk.id
       xml.title talk.title
       xml.abstract talk.abstract
+      xml.abstract_formatted talk.abstract_filtered, :media_type => "text/html", :format => "application/xhtml+xml"
       xml.speaker talk.name_of_speaker
       if talk.venue
         xml.venue talk.venue.name

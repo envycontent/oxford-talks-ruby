@@ -582,3 +582,7 @@ div#tellafriend form {
 	background-color: #f00; 
 	color: #fff;
 }
+
+span.series {
+	font-size: 0.6em;
+}
