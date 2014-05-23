@@ -1,6 +1,6 @@
 class ImageController < ApplicationController
   
-  caches_page :show
+#  caches_page :show
   
   def show
     magick = Image.find(params[:id]).to_magick(params[:geometry])
