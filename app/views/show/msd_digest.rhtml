@@ -1,0 +1,101 @@
+<html>
+        <head>
+<title>Medical Sciences Division What's On</title></head>
+
+<body>
+
+<table width="98%" border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+  <tr>
+    <td>
+<table width="700" border="0" align="center" cellpadding="0" cellspacing="0">
+<tr>
+<td><table border="0">
+				
+          <tr>
+            <td width="595" valign="bottom"><p style="font-family: Arial,sans-serif; font-size: 18px; color: #051354;">Medical Sciences Division What's On</p></td>
+            <td width="105" rowspan="3"><img src="http://www.medsci.ox.ac.uk/newsletters/june-2013/images/university-logo" width="105" height="105" style="display:block;" alt="University of Oxford logo &nbsp;" longdesc="http://www.ox.ac.uk"></td>
+          </tr>
+          <tr>
+        <td width="595" height="40" valign="bottom">
+              <p style="font-family: Arial,sans-serif; font-size: 30px; color: #051354;">Events and Seminars</p></td>
+          </tr>
+         
+          <tr>
+            <td valign="bottom">
+            <p style="font-family: Arial,sans-serif; font-size: 18px; line-height:18px; color: #051354;">
+               <%= DateTime.strptime(params['start_time'],'%s').strftime("%A %d %B %Y") %> - <%= DateTime.strptime(params['end_time'],'%s').strftime("%A %d %B %Y") %>
+                
+            </p>
+            </td>
+            </tr>
+            
+              <tr>
+<td valign="bottom" height="30">
+<p style="font-family: Arial,sans-serif; font-size: 14px; line-height:18px; color: #303030; padding: 0px 7px 0px 0px;">This list generated at <%= DateTime.now.strftime("%H:%M on %d %B") %>. Check the up-to-date list on <%= link_to "Oxford Talks", list_url(:id => @list) %>.
+</p>
+</td> 
+  
+  </tr>
+            
+          <tr>
+            <td colspan="2" height="12">&nbsp;</td>
+          </tr>
+        </table>
+        </td>
+</tr>
+<tr>
+<td>
+
+
+<% @talks.group_by(&:date).sort_by { |date,talks| date }.each do |date,talks| %>
+
+<p style="font-family: Arial,sans-serif; font-size: 16px; color: #1e429d; display: block; padding-bottom:0px; border-bottom: 2px solid #5a82ad;">
+
+<!-- Date of grouped seminars -->
+<%= date.strftime '%A %d %B %Y' %></p>
+
+<!-- talks -->
+<% talks.each do |talk| %>
+
+<p style="font-family: Arial,sans-serif; font-size: 12px; line-height:18px; color: #303030; padding: 0px 7px 0px 0px;"> 
+<span style="font-family: Arial,sans-serif; font-size: 14px; line-height:18px; color: #303030; padding: 0px 7px 0px 0px;">
+<!-- Time and title of talk -->
+<%= cam_time_format( talk.start_time.strftime('%I.%M%p' ) )%> <%= link_talk_absolute talk %> </span> <br />
+
+<!--Speaker -->
+<strong><%= talk.name_of_speaker %></strong>
+
+<br />
+
+<!-- does this only display if there is a talk special message? -->
+<% if talk.special_message && !talk.special_message.empty? %>
+      <%= talk.special_message %><br />
+    <% end %>
+
+<!-- Location -->
+<%= talk.venue %>
+<br />
+
+<!-- Link to Oxford Talks page and download to calendar -->
+<a href="<%= talk_url(:id => talk.id, :action => 'ics' ) %>" >
+    Download to your calendar
+</a> | <a href="<%= talk_url(:id => talk.id) %>">Oxford Talks</a>
+</p>
+
+<% end %>
+
+<% end %>
+
+   
+</td>
+</tr>
+
+
+
+</table>
+
+</td>
+</tr>
+</table>
+</body>
+</html>
