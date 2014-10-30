@@ -101,7 +101,7 @@ h3 + .large-list {
 
       	 <div class="content-spot">
 
-                  <span><%= link_talk_absolute talk %></span>
+                  <span><%= link_to talk.title, talk_url(:id => talk, :protocol => "http"), :target => 'new'%></span>
                   <span><%= talk.name_of_speaker %></span>
                   <span class='detail'><%= cam_time_format( talk.start_time.strftime('%I.%M%p' ) )%> <%= talk.venue %></span>
 
