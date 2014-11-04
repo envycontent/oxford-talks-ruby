@@ -1,0 +1,41 @@
+<h1 id="statistics">Current Series</h1>
+
+<p>Number of Series (Groups) with up-coming talks: <%= @current_series_count %></p>
+	
+
+<table id='upcoming-series' border="1" cellpadding="2" cellspacing="0">	
+    <tr>
+        <td>
+            ID
+        </td>
+        <td>
+            Name
+        </td>
+        <td>
+            Managers
+        </td>
+        <td>
+            Lists including this series
+        </td>
+    </tr>
+    <% @current_talks.group_by(&:series).each do |series,talks| %>
+     <tr>
+         <td>
+              <%= series.id %>
+          </td>
+         <td>
+             <%= series.name %>
+         </td>
+         <td>
+             <% for user in series.users %>
+			    <span><%= link_user user %> </span> 
+		     <% end %>
+		</td>
+		<td>
+		<% for list in series.parents %>
+			<span><%= link_list list %></span>&nbsp;
+		<% end %>
+		</td>
+	 </tr>	
+    <% end %>
+</table>

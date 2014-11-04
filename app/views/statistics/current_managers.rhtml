@@ -1,0 +1,39 @@
+<h1 id="statistics">Current Managers</h1>
+
+<p>Managers of series of talks</p>
+	
+
+<table id='upcoming-managers' border="1" cellpadding="2" cellspacing="2">	
+    <tr>
+        <td>
+            Series ID
+        </td>
+        <td>
+            Series Name
+        </td>
+        <td>
+            Manager
+        </td>
+        <td>
+            Email
+        </td>
+    </tr>
+    <% @current_managers.group_by(&:series).each do |series,talks| %>
+    <% for user in series.users %>
+     <tr>
+         <td>
+              <%= series.id %>
+          </td>
+         <td>
+             <%= series.name %>
+         </td>
+         <td>
+			<%= user.name %> 		    
+		</td>
+		<td>
+		    <%= user.email %>
+		</td>
+	 </tr>
+	 <% end %>	
+    <% end %>
+</table>

@@ -1,0 +1,39 @@
+<h1 id="statistics">Current Lists</h1>
+
+<p>Lists of collected talks that have current talks series embedded in them</p>
+	
+
+<table id='upcoming-lists' border="1" cellpadding="2" cellspacing="2">	
+    <tr>
+        <td>
+            List ID
+        </td>
+        <td>
+            List Name
+        </td>
+        <td>
+            Series
+        </td>
+        <td>
+            Series ID
+        </td>
+    </tr>
+    <% @current_lists.group_by(&:series).each do |series,talks| %>
+    <% for list in series.parents %>
+     <tr>
+         <td>
+              <%= list.id %>
+          </td>
+         <td>
+             <%= list.name %>
+         </td>
+         <td>
+			<%= series.id %> 		    
+		</td>
+		<td>
+		    <%= series.name %>
+		</td>
+	 </tr>
+	 <% end %>	
+    <% end %>
+</table>
