@@ -5,6 +5,7 @@
 	<% form_for(:talk, :url => talk_url(:action => 'update', :id => @talk.id ), :html => {:multipart => true, :id => 'edittalk'}) do |f| %>
 	<%= f.hidden_field :series_id %>
 	
+	<p><b>Please enter Trinity Term talks in the new Oxford Talks - launching early February </b></p>
 	<h3>Title</h3>
 	<%= f.text_field :title, {:size => 60, :class => 'wide' } %>
 	
@@ -31,7 +32,7 @@
 	<%= f.text_field :venue_name, {:size => 60, :class => 'wide' } %>
 	
 	<h3>Date YYYY/MM/DD</h3>
-	<%= f.text_field :date_string, {:size => '11'} %>
+	<p class='emailcheck'><%= f.text_field :date_string, {:size => '11'} %>
 	
 	<h3>Time HH:MM</h3>
 	<%= f.text_field :start_time_string, :size => '5' %> to <%= f.text_field :end_time_string, :size => '5' %> 
