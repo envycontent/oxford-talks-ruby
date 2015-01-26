@@ -36,6 +36,9 @@ before_filter :ensure_user_is_logged_in, :except => %w{ index current_series cur
     @current_lists = Talk.find_public(:all, :conditions => ['start_time >= ?',Time.now])
     
   end
-  
+  def current_talks
+     @current_talks = Talk.find_public(:all, :conditions => ['start_time >= ?',Time.now])
+     
+  end
   
 end

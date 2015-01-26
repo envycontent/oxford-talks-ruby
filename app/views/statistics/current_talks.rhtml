@@ -1,0 +1,63 @@
+<h1 id="statistics">Current Talks</h1>
+
+<p>All upcoming Talks</p>
+	
+
+<table id='upcoming-series' border="1" cellpadding="2" cellspacing="0">	
+    <tr>
+        <td>
+            ID
+        </td>
+        <td>
+            Title
+        </td>
+           
+        <td>
+            Start
+        </td>
+        <td>
+            End
+        </td>
+        <td>
+            Venue
+        </td>
+        <td>
+            Speaker
+        </td>
+        
+        <td>
+            Series ID
+        </td>
+        <td>
+            Abstract
+        </td>
+    </tr>
+    <% @current_talks.each do |talk| %>
+     <tr>
+         <td>
+              <%= talk.id %>
+          </td>
+         <td>
+             <%= talk.title %>
+         </td>
+         <td>
+             <%= talk.start_time.strftime('%FT%T%:%z') %>
+        </td>
+        <td>
+             <%= talk.end_time.strftime('%FT%T%:%z') %>
+        </td>
+        <td>
+             <%= talk.venue_name %>
+		</td>
+		<td>
+             <%= talk.name_of_speaker %>
+		</td>
+         <td>
+             <%= talk.series_id %>
+		</td>
+		<td>
+		    <%= talk.abstract %>
+		</td>
+	 </tr>	
+    <% end %>
+</table>
