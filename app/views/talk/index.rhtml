@@ -10,14 +10,16 @@
 		<% end %>
 	</p>
 		
+	<% if @talk.organiser && @talk.organiser.name == "OxTalks Automatic Aggregator" %>
+	<p class='urgent'>This talk was automatically pulled in from a feed overnight. Please double-check the details on the department or unit website.</p>
+	<% end %>
+	
 	<ul class='details'>
 		<li><%= image_tag 'user.jpg' %><%= link_to_if @talk.speaker, @talk.name_of_speaker, { :controller => "user", :action => "show", :id => @talk.speaker  } %></li>
 		<li><%= image_tag 'clock.jpg' %><%= format_time_of_talk @talk %></li>
 		<li><%= image_tag 'house.jpg' %><%= link_list @talk.venue %>.</li>
 	</ul>
-        <% if @talk.organiser && @talk.organiser.name = "OxTalks Automatic Aggregator" %>
-		<p>This talk was automatically pulled in from a feed overnight. Please double-check the details on the department or unit website.</p>
-		<% end %>
+        
 		
 		<% if @talk.special_message %>
 			<p class='urgent'><%= @talk.special_message %></p>
