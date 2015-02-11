@@ -50,7 +50,7 @@ class List < ActiveRecord::Base
   def List.find_or_create_by_name_while_checking_management( new_name )
     existing_lists = List.find_all_by_name( new_name )
     existing_lists.each do |list|
-      next unless list.managers.include?(User.current)
+      next unless (list.managers.include?(User.current)) or (User.current.administrator? )
       return list
     end
     new_list = List.create :name => new_name
@@ -62,7 +62,7 @@ class List < ActiveRecord::Base
     logger.debug "Looking for list with id"
     logger.debug id
     list = List.find_by_id(id)
-    if list.managers.include?(User.current)
+    if (list.managers.include?(User.current)) or ( User.current.administrator? )
       return list
     else
       return nil
@@ -86,6 +86,7 @@ class List < ActiveRecord::Base
   
   # These are the talks that are directly in the series
   has_many :talks_in_series, :class_name => 'Talk', :foreign_key => 'series_id'
+  
   
   # This is to allow a custom image to be loaded
   include BelongsToImage
