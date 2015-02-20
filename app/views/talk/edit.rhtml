@@ -5,7 +5,7 @@
 	<% form_for(:talk, :url => talk_url(:action => 'update', :id => @talk.id ), :html => {:multipart => true, :id => 'edittalk'}) do |f| %>
 	<%= f.hidden_field :series_id %>
 	
-	<p><b>Please enter Trinity Term talks in the new Oxford Talks - launching early February </b></p>
+	<p><b>Please enter and edit talks in the new Oxford Talks</b></p>
 	<h3>Title</h3>
 	<%= f.text_field :title, {:size => 60, :class => 'wide' } %>
 	

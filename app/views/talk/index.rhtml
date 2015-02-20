@@ -5,10 +5,15 @@
 		<%= add_talk_to_list_link  %>
 		<%= link_to 'Download to your calendar using vCal', :action => 'vcal', :id => @talk %>
 		<% if @talk.editable? %>
-			<%= link_to 'Edit this talk', :controller => "talk", :action => "edit", :id => @talk  %>
 			<%= link_to 'Delete this talk', :controller => 'talk', :action => 'delete', :id => @talk %>
 		<% end %>
 	</p>
+	
+	
+	    <% if @talk.editable? %>
+		<p>Please edit this talk in the <a href="http://new.talks.ox.ac.uk">New Oxford Talks</a>. You will find instructions on how to sign up for the new Oxford Talks <a href="http://talksox.readthedocs.org">here</a>.</p>
+		<% end %>
+	
 		
 	<% if @talk.organiser && @talk.organiser.name == "OxTalks Automatic Aggregator" %>
 	<p class='urgent'>This talk was automatically pulled in from a feed overnight. Please double-check the details on the department or unit website.</p>
