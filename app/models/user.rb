@@ -25,11 +25,16 @@ class User < ActiveRecord::Base
   def User.sort_field; 'name_in_sort_order' end
   
   def User.find_or_create_by_email_including_locals(email)
-    local_id = InstallationHelper.CURRENT_INSTALLATION.local_id_from_email(email)
-    if not local_id.nil?
-      return User.find_or_create_by_crsid(local_id)
-    else
+    user = find_by_email(email)
+    if user
       return User.find_or_create_by_email(email)
+    else
+      local_id = InstallationHelper.CURRENT_INSTALLATION.local_id_from_email(email)
+        if not local_id.nil?
+            return User.find_or_create_by_crsid(local_id)
+        else
+            return User.find_or_create_by_email(email)
+        end
     end
   end
 
