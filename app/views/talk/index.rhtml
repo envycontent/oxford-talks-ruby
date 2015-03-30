@@ -4,6 +4,9 @@
 	<p class='actions'>
 		<%= add_talk_to_list_link  %>
 		<%= link_to 'Download to your calendar using vCal', :action => 'vcal', :id => @talk %>
+	<% if @talk.editable? %> 	
+	     <%= link_to 'Add an image', :action => 'image_edit', :id => @talk %>	
+	<% end %>
 		
 	</p>
 	

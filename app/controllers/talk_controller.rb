@@ -69,6 +69,14 @@ class TalkController < ApplicationController
       @list = @talk.series
     end
     
+    def image_edit
+      return false unless ensure_user_is_logged_in
+      find_talk || create_talk
+      return false unless user_can_edit_talk? 
+      set_usual_details
+      @list = @talk.series
+    end
+    
     def update
       return false unless ensure_user_is_logged_in
       # The following is to catch "redirect after login" GET requests

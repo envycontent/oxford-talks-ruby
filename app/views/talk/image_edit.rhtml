@@ -1,0 +1,43 @@
+<table>
+	<tr><td><%= error_messages_for :talk %></td><td></td></tr>
+	<tr>
+		<td>
+	<% form_for(:talk, :url => talk_url(:action => 'update', :id => @talk.id ), :html => {:multipart => true, :id => 'edittalk'}) do |f| %>
+	<%= f.hidden_field :series_id %>
+	
+	<p><b>Please enter and edit talks in the new Oxford Talks</b></p>
+
+	
+	<h3>Picture of speaker or other image associated with this talk (optional)</h3>
+	<%= f.file_field :image %>
+	
+
+	<p><%= submit_tag 'Save'%> or <%= link_to 'Cancel', @talk.id ? talk_url(:id => @talk.id) : list_url(:id => @talk.series.id ) %></p>
+	
+	<% end %>
+</td>
+<td id='edit_talk_help'>
+	
+</td>
+<tr>	
+</table>
+<script>
+var talk_edit_rules = {
+	'#edittalk input' : function(el) {
+		Event.observe(el, 'focus', function(e){
+			new Ajax.Updater('edit_talk_help', '/talk/help?list_id=<%= @talk.series.id %>&field='+el.id, {asynchronous:true, evalScripts:true});
+		});
+	},
+	'#edittalk textarea' : function(el) {
+		el.onfocus = function(){ 
+			new Ajax.Updater('edit_talk_help', '/talk/help?list_id=<%= @talk.series.id %>&field='+el.id, {asynchronous:true, evalScripts:true});
+		}
+	},
+	'#edittalk input#talk_title' : function(el){ default_value(el,'Title to be confirmed'); },
+	'#edittalk input#talk_name_of_speaker' : function(el){ default_value(el,''); },
+	'#edittalk textarea#talk_abstract' : function(el){ default_value(el,'Abstract not available'); },	
+	'#edittalk input#talk_venue_name' : function(el){ default_value(el,'Venue to be confirmed'); }
+}
+
+Behaviour.register(talk_edit_rules);
+</script>
