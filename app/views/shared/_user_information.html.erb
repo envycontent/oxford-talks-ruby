@@ -7,21 +7,27 @@
 	<%= link_to 'Manage e-mail reminders', reminder_path %>
 	<br/>
 	<%= link_to 'Log out', login_path(:action => 'logout') %>
-	
+
 	<h2>For talk organisers</h2>
-	<%= link_to 'Create a new list', list_details_path(:action => 'new') %>
+
+	<p>Use the <a href='http://new.talks.ox.ac.uk'>new version of Oxford Talks</a></p>
+
 	<%= if User.current.administrator?
         link_to 'Add a new talk', list_details_path(:action => 'choose')
+			end %>
+	<br/>
+  <%= if User.current.administrator?
+	    link_to 'Create a new list', list_details_path(:action => 'new')
       end %>
 	<br/>
-	
+
 	<h2>Lists that you manage</h2>
 	<%= link_list User.current.personal_list %>
 	<br/>
 	<% (User.current.lists - [User.current.personal_list]).sort_by { |list| list.name }.each do |list| %>
 		<%= link_list list %>
 	<% end %>
-	
+
 <% else %>
 	<%= render 'shared/login'%>
 <% end %>
