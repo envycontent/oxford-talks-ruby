@@ -324,7 +324,7 @@ class Talk < ActiveRecord::Base
       [
         'BEGIN:VEVENT',
         "CATEGORIES:#{series && series.name && series.name.to_ics}",
-        "SUMMARY:#{"#{title} -- #{name_of_speaker}".to_ics}",
+        "SUMMARY:#{"#{title} -- #{name_of_speaker}".to_ics} Please renew this feed at new.talks.ox.ac.uk",
         "DTSTART:#{start_time && start_time.getgm.to_s(:ics)}",
         "DTEND:#{end_time && end_time.getgm.to_s(:ics)}",
         "UID:TALK#{id}AT#{ActionController::Base.asset_host}",

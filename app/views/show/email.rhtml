@@ -1,5 +1,5 @@
 <% @errors.each do |error| %>
-Error: <%=error%>. 
+Error: <%=error%>.
 <% end %>
 
 <%= @talks.empty? ? '(No talks)' : ''%><% @talks.group_by(&:date).sort_by { |date,talks| date }.each do |date,talks| %>
@@ -7,6 +7,13 @@ Error: <%=error%>.
 <%= '-' * date.to_time.strftime('%A %d %B %Y').size %><% talks.each do |talk| %>
 <%= talk.start_time.strftime('%H:%M') %> <%= talk.title %><% end %>
 <% end %>
+
+IMPORTANT - This version of Oxford Talks is closing down
+
+please go to the new version of Oxford Talks to set up your lists
+
+http://new.talks.ox.ac.uk
+
 In detail:
 *********
 <% @talks.group_by(&:date).sort_by { |date,talks| date }.each do |date,talks| %>
