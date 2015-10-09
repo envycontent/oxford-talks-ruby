@@ -11,4 +11,12 @@ cal = Icalendar::Calendar.new
 	event.url = talk_url( :id => talk )
 end
 
+event = cal.event
+event.start = DateTime.parse( '30/11/2015 9:00' ).to_ical( true ) # True means GMT
+event.end = DateTime.parse( '30/11/2015 10:00' ).to_ical( true ) # True means GMT
+event.timestamp = DateTime.now
+event.summary = escape_for_ical("Renew your Oxford Talks Events Feed!")
+event.description = escape_for_ical("This feed is closing down, go to Oxford Talks to get the new feed")
+
+
 cal.to_ical
